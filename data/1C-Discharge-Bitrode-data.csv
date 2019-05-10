@@ -1,3 +1,4 @@
+Exclude,Time(s),Cycle,Loop,Loop,Loop,Step,StepTime(s),Current(A),Voltage(V),Power(W),Capacity(Ah),Energy(Wh),Mode,Data,
 No,1.0,1,1,1,1,3,1.0,0.00,3.147,0.0,0.00,0.00,REST, ,
 No,2.0,1,1,1,1,3,2.0,0.00,3.148,0.0,0.00,0.00,REST, ,
 No,3.0,1,1,1,1,3,3.0,0.01,3.147,0.0,0.00,0.00,REST, ,

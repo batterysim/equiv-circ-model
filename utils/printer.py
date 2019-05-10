@@ -54,10 +54,12 @@ def print_coeffs(ecm):
     coeffs_ttc = ecm.curve_fit_coeff(func_ttc, 5)
 
     print(f"\n=== Curve Fit Coefficients ===\n")
+    print('\n--- Coefficients from OTC ---')
     print('a\tb\talpha')
     for c in coeffs_otc:
         print(f'{c[0]:.4f}\t{c[1]:.4f}\t{c[2]:.4f}')
 
+    print('\n--- Coefficients from TTC ---')
     print('\na\tb\tc\talpha\tbeta')
     for c in coeffs_ttc:
         print(f'{c[0]:.4f}\t{c[1]:.4f}\t{c[2]:.4f}\t{c[3]:.4f}\t{c[4]:.4f}')
@@ -70,8 +72,9 @@ def print_rctau(ecm):
     """
     coeffs_ttc = ecm.curve_fit_coeff(ecm.func_ttc, 5)
     rctau = ecm.rctau_ttc(coeffs_ttc)
+    soc = [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
 
-    print(f"\n=== RC Parameters ===\n")
-    print(f"{'tau1 [s]':10} {'tau2 [s]':10} {'r0 [Ω]':10} {'r1 [Ω]':10} {'r2 [Ω]':10} {'c1 [F]':10} {'c2 [F]':10}")
-    for r in rctau:
-        print(f'{r[0]:<10.2f} {r[1]:<10.2f} {r[2]:<10.4f} {r[3]:<10.4f} {r[4]:<10.4f} {r[5]:<10.1f} {r[6]:<10.1f}')
+    print(f"\n=== RC Parameters from TTC ===\n")
+    print(f"{'soc [-]':10} {'tau1 [s]':10} {'tau2 [s]':10} {'r0 [Ω]':10} {'r1 [Ω]':10} {'r2 [Ω]':10} {'c1 [F]':10} {'c2 [F]':10}")
+    for s, r in zip(soc, rctau):
+        print(f'{s:<10} {r[0]:<10.2f} {r[1]:<10.2f} {r[2]:<10.4f} {r[3]:<10.4f} {r[4]:<10.4f} {r[5]:<10.1f} {r[6]:<10.1f}')

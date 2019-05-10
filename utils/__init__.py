@@ -2,7 +2,10 @@
 
 from . import params
 
-from .plotter import plot_data
+from .plotter import plot_hppc_data
+from .plotter import plot_discharge_data
+from .plotter import plot_temp_data
+
 from .plotter import plot_soc_ocv
 from .plotter import plot_curve_fit
 from .plotter import plot_v_ecm

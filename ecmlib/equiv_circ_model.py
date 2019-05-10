@@ -25,6 +25,7 @@ class EquivCircModel:
         params : module
             Parameters module for battery cell.
         """
+        data.process()
         self.data = data
         self.params = params
 

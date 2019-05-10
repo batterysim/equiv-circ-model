@@ -1,3 +1,4 @@
+Exclude,Time(s),Cycle,Loop,Loop,Loop,Step,StepTime(s),Current(A),Voltage(V),Power(W),Capacity(Ah),Energy(Wh),Mode,Data,
 No,1.0,1,1,1,1,2,1.0,-61.20,4.062,-248.4,-0.01,-0.06,DCHG, ,
 No,2.0,1,1,1,1,2,2.0,-61.20,4.053,-247.6,-0.03,-0.13,DCHG, ,
 No,3.0,1,1,1,1,2,3.0,-61.20,4.046,-247.3,-0.05,-0.20,DCHG, ,
