@@ -77,14 +77,24 @@ class EquivCircModel:
         """
         q = self.params.q_cell * 3600
         dt = np.diff(self.data.time)
-        z = np.ones(len(self.data.current))
 
-        for k, i in enumerate(self.data.current[:-1]):
+        nc = len(self.data.current)
+        z = np.ones(nc)
+
+        # for k, i in enumerate(self.data.current[:-1]):
+        #     if i > 0:
+        #         eta = self.params.eta_chg
+        #     else:
+        #         eta = self.params.eta_dis
+        #     z[k + 1] = z[k] + ((eta * i * dt[k]) / q)
+
+        for k in range(1, nc):
+            i = self.data.current[k]
             if i > 0:
                 eta = self.params.eta_chg
             else:
                 eta = self.params.eta_dis
-            z[k + 1] = z[k] + ((eta * i * dt[k]) / q)
+            z[k] = z[k - 1] + ((eta * i * dt[k - 1]) / q)
 
         return z
 
@@ -197,12 +207,12 @@ class EquivCircModel:
         nrow = len(id0)
         rctau = np.zeros((nrow, 7))
 
-        for i in range(nrow):
-            di = abs(self.data.current[id1[i]] - self.data.current[id0[i]])
-            dt = self.data.time[id2[i]] - self.data.time[id0[i]]
-            dv = abs(self.data.voltage[id1[i]] - self.data.voltage[id0[i]])
+        for k in range(nrow):
+            di = abs(self.data.current[id1[k]] - self.data.current[id0[k]])
+            dt = self.data.time[id2[k]] - self.data.time[id0[k]]
+            dv = abs(self.data.voltage[id1[k]] - self.data.voltage[id0[k]])
 
-            _, b, c, alpha, beta = coeff[i]
+            _, b, c, alpha, beta = coeff[k]
 
             tau1 = 1 / alpha
             tau2 = 1 / beta
@@ -212,7 +222,7 @@ class EquivCircModel:
             c1 = tau1 / r1
             c2 = tau2 / r2
 
-            rctau[i] = tau1, tau2, r0, r1, r2, c1, c2
+            rctau[k] = tau1, tau2, r0, r1, r2, c1, c2
 
         return rctau
 
@@ -239,28 +249,29 @@ class EquivCircModel:
         Determine voltage from equivalent circuit model.
         """
         dt = np.diff(self.data.time)    # length of each time step, dt is not constant
-        nt = len(self.data.current)     # total number of time steps based on current
+        nc = len(self.data.current)     # total number of time steps based on current
+        v0 = np.zeros(nc)    # initialize v0 array
+        v1 = np.zeros(nc)    # initialize v1 array
+        v2 = np.zeros(nc)    # initialize v2 array
 
-        v0 = np.zeros(nt)    # initialize v0 array
-        v1 = np.zeros(nt)    # initialize v1 array
-        v2 = np.zeros(nt)    # initialize v2 array
+        for k in range(1, nc):
+            i = self.data.current[k]
 
-        for k in range(nt - 1):
             # get parameters at state of charge
             tau1, tau2, r0, r1, r2 = self.get_rtau(rctau, soc[k])
 
             # voltage in r0 resistor
-            v0[k + 1] = r0 * self.data.current[k]
+            v0[k] = r0 * i
 
             # voltage in c1 capacitor
-            tm1 = v1[k] * np.exp(-dt[k] / tau1)
-            tm2 = r1 * (1 - np.exp(-dt[k] / tau1)) * self.data.current[k]
-            v1[k + 1] = tm1 + tm2
+            tm1 = v1[k - 1] * np.exp(-dt[k - 1] / tau1)
+            tm2 = r1 * (1 - np.exp(-dt[k - 1] / tau1)) * i
+            v1[k] = tm1 + tm2
 
             # voltage in c2 capacitor
-            tm3 = v2[k] * np.exp(-dt[k] / tau2)
-            tm4 = r2 * (1 - np.exp(-dt[k] / tau2)) * self.data.current[k]
-            v2[k + 1] = tm3 + tm4
+            tm3 = v2[k - 1] * np.exp(-dt[k - 1] / tau2)
+            tm4 = r2 * (1 - np.exp(-dt[k - 1] / tau2)) * i
+            v2[k] = tm3 + tm4
 
         vecm = ocv + v0 + v1 + v2
         return vecm

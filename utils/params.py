@@ -40,8 +40,8 @@ h_conv = 10
 
 m_cell = 0.799
 
-q_cell = 32.0
-# q_cell = 30.6
+# q_cell = 32.0
+q_cell = 30.6
 
 tinf = 298.15
 
