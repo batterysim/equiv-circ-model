@@ -17,9 +17,9 @@ def _config(ax, xlabel, ylabel, title=None, loc=None):
         ax.legend(loc=loc)
 
 
-def plot_hppc_data(data):
+def plot_hppc_orig(data):
     """
-    Plot original and processed HPPC data from battery cell test.
+    Plot original HPPC data from battery cell test.
     """
     fig, ax = plt.subplots(tight_layout=True)
     ax.plot(data.time, data.current, 'C0')
@@ -48,7 +48,11 @@ def plot_hppc_data(data):
     ax2.tick_params('y', colors='C3')
     ax2.set_frame_on(False)
 
-    data.process()
+
+def plot_hppc_proc(data):
+    """
+    Plot processed HPPC data from battery cell test.
+    """
     ids = data.get_ids()
     idq = data.get_idq()
     idrc = data.get_idrc()
@@ -70,12 +74,10 @@ def plot_hppc_data(data):
     ax.plot(data.time[idrc[4]], data.voltage[idrc[4]], 'o', alpha=0.8, mew=0, label='id4')
     _config(ax, 'Time [s]', 'Voltage [V]', loc='best')
 
-    plt.show()
 
-
-def plot_discharge_data(data, proc):
+def plot_discharge_orig(data):
     """
-    Plot original and processed discharge data from battery cell test.
+    Plot original discharge data from battery cell test.
     """
     ids = data.get_ids()
     id0, id1, id2, id3 = data.get_idx()
@@ -109,18 +111,21 @@ def plot_discharge_data(data, proc):
     ax2.tick_params('y', colors='C3')
     ax2.set_frame_on(False)
 
+
+def plot_discharge_proc(data):
+    """
+    Plot processed discharge data from battery cell test.
+    """
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.8), tight_layout=True)
-    ax1.plot(proc.time, proc.current, 'C0')
-    ax2.plot(proc.time, proc.voltage, 'C3')
+    ax1.plot(data.time, data.current, 'C0')
+    ax2.plot(data.time, data.voltage, 'C3')
     _config(ax1, 'Time [s]', 'Current [A]')
     _config(ax2, 'Time [s]', 'Voltage [V]')
 
-    plt.show()
 
-
-def plot_temp_data(data, proc):
+def plot_temp_orig(data):
     """
-    Plot original and processed temperature data from battery cell test.
+    Plot original temperature data from battery cell test.
     """
     fig, ax = plt.subplots(tight_layout=True)
     ax.plot(data.time, data.tc1, label='tc1')
@@ -130,14 +135,17 @@ def plot_temp_data(data, proc):
     ax.axvspan(data.time[data.id0], data.time[data.id1], facecolor='0.9', label='section')
     _config(ax, 'Time [s]', 'Temperature [°C]', loc='best')
 
-    fig, ax = plt.subplots(tight_layout=True)
-    ax.plot(proc.time, proc.tc1, label='tc1')
-    ax.plot(proc.time, proc.tc2, label='tc2')
-    ax.plot(proc.time, proc.tc3, label='tc3')
-    ax.plot(proc.time, proc.tc4, label='tc4')
-    _config(ax, 'Time [s]', 'Temperature [°C]', loc='best')
 
-    plt.show()
+def plot_temp_proc(data):
+    """
+    Plot processed temperature data from battery cell test.
+    """
+    fig, ax = plt.subplots(tight_layout=True)
+    ax.plot(data.time, data.tc1, label='tc1')
+    ax.plot(data.time, data.tc2, label='tc2')
+    ax.plot(data.time, data.tc3, label='tc3')
+    ax.plot(data.time, data.tc4, label='tc4')
+    _config(ax, 'Time [s]', 'Temperature [°C]', loc='best')
 
 
 def plot_soc_ocv(data, ecm):
@@ -171,8 +179,6 @@ def plot_soc_ocv(data, ecm):
     fig, ax = plt.subplots(tight_layout=True)
     ax.plot(soc_pts, v_pts, 'm', marker='x')
     _config(ax, 'State of charge [-]', 'Open circuit voltage [V]')
-
-    plt.show()
 
 
 def plot_curve_fit(data, ecm):
@@ -208,8 +214,6 @@ def plot_curve_fit(data, ecm):
     ax.plot(data.time[id4], data.voltage[id4], 'x', label='id4')
     _config(ax, 'Time [s]', 'Voltage [V]', loc='best')
 
-    plt.show()
-
 
 def plot_v_ecm(data, v_ecm):
     """
@@ -225,4 +229,9 @@ def plot_v_ecm(data, v_ecm):
     ax.plot(data.time, abs(data.voltage - v_ecm))
     _config(ax, 'Time [s]', 'Absolute voltage difference [V]')
 
+
+def show_plots():
+    """
+    Show all plot figures.
+    """
     plt.show()

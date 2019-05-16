@@ -104,15 +104,20 @@ class HppcData:
         id4 = ids[5::5]
         return id0, id1, id2, id3, id4
 
-    def process(self):
+    @classmethod
+    def process(cls, path):
         """
         Process original HPPC data for use with equivalent circuit model. The
         S-flag determines start and stop indices `ids` in the data. Data
         preceding the first start/stop point is removed and remaining data is
         assigned to class attributes.
         """
-        ids = self.get_ids()
-        self.time = self.time[ids[1]:]
-        self.current = self.current[ids[1]:]
-        self.voltage = self.voltage[ids[1]:]
-        self.data = self.data[ids[1]:]
+        data = cls(path)
+
+        ids = data.get_ids()
+        data.time = data.time[ids[1]:]
+        data.current = data.current[ids[1]:]
+        data.voltage = data.voltage[ids[1]:]
+        data.data = data.data[ids[1]:]
+
+        return data

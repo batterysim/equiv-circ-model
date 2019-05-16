@@ -25,7 +25,6 @@ class EquivCircModel:
         params : module
             Parameters module for battery cell.
         """
-        data.process()
         self.data = data
         self.params = params
 
@@ -80,13 +79,6 @@ class EquivCircModel:
 
         nc = len(self.data.current)
         z = np.ones(nc)
-
-        # for k, i in enumerate(self.data.current[:-1]):
-        #     if i > 0:
-        #         eta = self.params.eta_chg
-        #     else:
-        #         eta = self.params.eta_dis
-        #     z[k + 1] = z[k] + ((eta * i * dt[k]) / q)
 
         for k in range(1, nc):
             i = self.data.current[k]
@@ -250,9 +242,9 @@ class EquivCircModel:
         """
         dt = np.diff(self.data.time)    # length of each time step, dt is not constant
         nc = len(self.data.current)     # total number of time steps based on current
-        v0 = np.zeros(nc)    # initialize v0 array
-        v1 = np.zeros(nc)    # initialize v1 array
-        v2 = np.zeros(nc)    # initialize v2 array
+        v0 = np.zeros(nc)               # initialize v0 array
+        v1 = np.zeros(nc)               # initialize v1 array
+        v2 = np.zeros(nc)               # initialize v2 array
 
         for k in range(1, nc):
             i = self.data.current[k]
@@ -275,3 +267,32 @@ class EquivCircModel:
 
         vecm = ocv + v0 + v1 + v2
         return vecm
+
+    def therm(self, ocv, proc, vecm):
+        """
+        Determine temperature profile from discharge data.
+        """
+        curr = self.data.current
+        time = self.data.time
+
+        asurf = self.params.a_surf
+        cp = self.params.cp
+        hconv = self.params.h_conv
+        mcell = self.params.m_cell
+
+        dt = np.diff(time)  # length of each time step
+        nc = len(curr)      # total number of time steps based on current
+
+        temp = np.zeros(nc)
+        temp[0] = proc.tc4[0] + 273.15
+        tinf = self.params.tinf
+
+        for k in range(1, nc):
+            i = curr[k]
+            q_ecm = (vecm[k] - ocv[k]) * i
+            q_conv = hconv * asurf * (temp[k] - tinf)
+            q = q_ecm - q_conv
+            dT = (q / (mcell * cp)) * dt[k]
+            temp[k + 1] = dT + temp[k]
+
+        return temp
