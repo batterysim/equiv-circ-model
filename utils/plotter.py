@@ -148,16 +148,14 @@ def plot_temp_proc(data):
     _config(ax, 'Time [s]', 'Temperature [°C]', loc='best')
 
 
-def plot_soc_ocv(data, ecm):
+def plot_soc_ocv(data, ocv, soc, i_pts, t_pts, v_pts, z_pts):
     """
     Plot SOC and OCV from equivalent circuit model.
     """
-    i_pts, t_pts, v_pts, soc_pts = ecm.points
-
     fig, ax = plt.subplots(tight_layout=True)
     ax.plot(data.time, data.voltage, 'C3', label='data')
     ax.plot(t_pts, v_pts, 'x', label='ocv pts')
-    ax.plot(data.time, ecm.ocv, '--', label='ocv')
+    ax.plot(data.time, ocv, '--', label='ocv')
     _config(ax, 'Time [s]', 'Voltage [V]', loc='best')
 
     fig, ax1 = plt.subplots(tight_layout=True)
@@ -169,15 +167,15 @@ def plot_soc_ocv(data, ecm):
     ax1.tick_params('y', colors='C0')
     ax1.set_frame_on(False)
     ax2 = ax1.twinx()
-    ax2.plot(data.time, ecm.soc, 'm', label='soc')
-    ax2.plot(t_pts, soc_pts, 'xC6', label='soc pts')
+    ax2.plot(data.time, soc, 'm', label='soc')
+    ax2.plot(t_pts, z_pts, 'xC6', label='soc pts')
     ax2.legend(loc='best')
     ax2.set_ylabel('SOC [-]', color='C6')
     ax2.tick_params('y', colors='C6')
     ax2.set_frame_on(False)
 
     fig, ax = plt.subplots(tight_layout=True)
-    ax.plot(soc_pts, v_pts, 'm', marker='x')
+    ax.plot(z_pts, v_pts, 'm', marker='x')
     _config(ax, 'State of charge [-]', 'Open circuit voltage [V]')
 
 

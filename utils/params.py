@@ -29,8 +29,8 @@ discharge tests.
 
 a_surf = 0.067569
 
-cp = 1100
-# cp = 1300
+cp_cell = 1100
+# cp_cell = 1300
 
 eta_chg = 0.98
 eta_dis = 1.00
