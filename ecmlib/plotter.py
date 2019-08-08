@@ -25,7 +25,7 @@ def plot_hppc_orig(data):
     ax.plot(data.time, data.current, 'C0')
     _config(ax, 'Time [s]', 'Current [A]')
 
-    fig, ax = plt.subplots(tight_layout=True)
+    fig, ax = plt.subplots()
     ax.plot(data.time, data.voltage, 'C3')
     ax.arrow(15474, 4.06, 0, -0.14, head_width=1000, head_length=0.05, zorder=20)
     _config(ax, 'Time [s]', 'Voltage [V]')
