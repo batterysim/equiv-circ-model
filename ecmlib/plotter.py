@@ -170,8 +170,8 @@ def plot_soc_ocv(data, ocv, soc, i_pts, t_pts, v_pts, z_pts):
     ax2.plot(data.time, soc, 'm', label='soc')
     ax2.plot(t_pts, z_pts, 'xC6', label='soc pts')
     ax2.legend(loc='best')
-    ax2.set_ylabel('SOC [-]', color='C6')
-    ax2.tick_params('y', colors='C6')
+    ax2.set_ylabel('SOC [-]', color='m')
+    ax2.tick_params('y', colors='m')
     ax2.set_frame_on(False)
 
     fig, ax = plt.subplots(tight_layout=True)

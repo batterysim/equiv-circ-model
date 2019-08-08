@@ -3,13 +3,10 @@ import argparse
 import params
 import plotter
 import printer
-import state_of_charge
-import open_circ_voltage
-import voltage_ecm
 from discharge_data import DischargeData
 from temperature_data import TemperatureData
 from hppc_data import HppcData
-from hppc_ecm import HppcEcm
+from equiv_circ_model import EquivCircModel
 
 
 def main():
@@ -65,7 +62,8 @@ def main():
     if args.curvefit:
         file = params.datafiles['hppc']
         data = HppcData.process(file)
-        ecm = HppcEcm(data)
+
+        ecm = EquivCircModel(data, params)
 
         printer.print_parameters(params)
         printer.print_coeffs(ecm)
@@ -76,7 +74,8 @@ def main():
     if args.rctau:
         file = params.datafiles['hppc']
         data = HppcData.process(file)
-        ecm = HppcEcm(data)
+
+        ecm = EquivCircModel(data, params)
         coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)
         rctau = ecm.rctau_ttc(coeffs)
 
@@ -85,19 +84,13 @@ def main():
 
     # State of charge (SOC) and open circuit voltage (OCV) from HPPC data.
     if args.sococv:
-        eta_chg = params.eta_chg
-        eta_dis = params.eta_dis
-        q_cell = params.q_cell
         file = params.datafiles['hppc']
-
         data = HppcData.process(file)
-        curr = data.current
-        time = data.time
-        soc = state_of_charge.soc(curr, time, eta_chg, eta_dis, q_cell)
 
-        ecm = HppcEcm(data)
+        ecm = EquivCircModel(data, params)
+        soc = ecm.soc()
         i_pts, t_pts, v_pts, z_pts = ecm.points(soc)
-        ocv = open_circ_voltage.ocv(v_pts, z_pts, soc)
+        ocv = ecm.ocv(v_pts, z_pts, soc)
 
         printer.print_parameters(params)
         printer.print_soc_ocv(v_pts, z_pts)
@@ -107,23 +100,17 @@ def main():
 
     # Estimate HPPC battery cell voltage using equivalent circuit model (ECM).
     if args.vbatt:
-        eta_chg = params.eta_chg
-        eta_dis = params.eta_dis
-        q_cell = params.q_cell
         file = params.datafiles['hppc']
-
         data = HppcData.process(file)
-        curr = data.current
-        time = data.time
-        soc = state_of_charge.soc(curr, time, eta_chg, eta_dis, q_cell)
 
-        ecm = HppcEcm(data)
+        ecm = EquivCircModel(data, params)
+        soc = ecm.soc()
         i_pts, t_pts, v_pts, z_pts = ecm.points(soc)
+        ocv = ecm.ocv(v_pts, z_pts, soc)
+
         coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)
         rctau = ecm.rctau_ttc(coeffs)
-
-        ocv = open_circ_voltage.ocv(v_pts, z_pts, soc)
-        v_batt = voltage_ecm.v_ecm(curr, time, soc, ocv, rctau)
+        v_batt = ecm.v_ecm(soc, ocv, rctau)
 
         plotter.plot_v_ecm(data, v_batt)
         plotter.show_plots()
