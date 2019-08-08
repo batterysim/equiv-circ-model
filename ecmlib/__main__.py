@@ -89,8 +89,7 @@ def main():
 
         ecm = EquivCircModel(data, params)
         soc = ecm.soc()
-        i_pts, t_pts, v_pts, z_pts = ecm.points(soc)
-        ocv = ecm.ocv(v_pts, z_pts, soc)
+        ocv, i_pts, t_pts, v_pts, z_pts = ecm.ocv(soc, pts=True)
 
         printer.print_parameters(params)
         printer.print_soc_ocv(v_pts, z_pts)
@@ -105,8 +104,7 @@ def main():
 
         ecm = EquivCircModel(data, params)
         soc = ecm.soc()
-        i_pts, t_pts, v_pts, z_pts = ecm.points(soc)
-        ocv = ecm.ocv(v_pts, z_pts, soc)
+        ocv = ecm.ocv(soc)
 
         coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)
         rctau = ecm.rctau_ttc(coeffs)

@@ -57,6 +57,38 @@ class EquivCircModel:
         self.eta_dis = params.eta_dis
         self.q_cell = params.q_cell
 
+    @staticmethod
+    def func_otc(t, a, b, alpha):
+        """
+        Exponential function for a one time constant model (OTC).
+        """
+        return a - b * np.exp(-alpha * t)
+
+    @staticmethod
+    def func_ttc(t, a, b, c, alpha, beta):
+        """
+        Exponential function for a two time constants model (TTC).
+        """
+        return a - b * np.exp(-alpha * t) - c * np.exp(-beta * t)
+
+    @staticmethod
+    def get_rtau(rctau, z):
+        """
+        Determine tau and resistor values for any SOC.
+        """
+
+        # determine index where z is close to soc parameters
+        soc = np.arange(0.1, 1.0, 0.1)[::-1]
+        idx = abs(soc - z).argmin()
+
+        # return resistor and tau values at z
+        tau1 = rctau[:, 0][idx]
+        tau2 = rctau[:, 1][idx]
+        r0 = rctau[:, 2][idx]
+        r1 = rctau[:, 3][idx]
+        r2 = rctau[:, 4][idx]
+        return tau1, tau2, r0, r1, r2
+
     def soc(self):
         """
         State of charge (SOC) of a battery cell based on the method from
@@ -105,19 +137,7 @@ class EquivCircModel:
 
         return z
 
-    def points(self, soc):
-        """
-        Method to get OCV related points in HPPC data and SOC vector.
-        """
-        id0 = self.idx[0]
-        i_pts = np.append(self.current[id0], self.current[-1])
-        t_pts = np.append(self.time[id0], self.time[-1])
-        v_pts = np.append(self.voltage[id0], self.voltage[-1])
-        z_pts = np.append(soc[id0], soc[-1])
-        return i_pts, t_pts, v_pts, z_pts
-
-    @staticmethod
-    def ocv(v_pts, z_pts, soc):
+    def ocv(self, soc, pts=False):
         """
         Linearly interpolate the open circuit voltage (OCV) from state of charge
         points and voltage points in the HPPC data. Points are at 10% intervals
@@ -128,14 +148,36 @@ class EquivCircModel:
         ----------
         soc : vector
             State of charge for every time step in data [s]
+        pts : bool, optional
+            Return points in the HPPC data that are related to open circuit
+            voltage. Default value is`False`.
 
         Returns
         -------
         ocv : vector
-            Open circuit voltage for every time step in data [V]
+            Open circuit voltage [V] for every time step in data. Vector is
+            same length as SOC vector.
+        i_pts : vector, optional
+            Current [A] at 100% SOC to 0% SOC in 10% increments.
+        t_pts : vector, optional
+            Time [s] at 100% SOC to 0% SOC in 10% increments.
+        v_pts : vector, optional
+            Voltage [V] at 100% SOC to 0% SOC in 10% increments.
+        z_pts : vector, optional
+            State of charge [-] at 100% SOC to 0% SOC in 10% increments.
         """
-        ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
-        return ocv
+        id0 = self.idx[0]
+        v_pts = np.append(self.voltage[id0], self.voltage[-1])
+        z_pts = np.append(soc[id0], soc[-1])
+
+        if pts is True:
+            i_pts = np.append(self.current[id0], self.current[-1])
+            t_pts = np.append(self.time[id0], self.time[-1])
+            ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
+            return ocv, i_pts, t_pts, v_pts, z_pts
+        else:
+            ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
+            return ocv
 
     def curve_fit_coeff(self, func, ncoeff):
         """
@@ -227,38 +269,6 @@ class EquivCircModel:
 
         return rctau
 
-    @staticmethod
-    def func_otc(t, a, b, alpha):
-        """
-        Exponential function for a one time constant model (OTC).
-        """
-        return a - b * np.exp(-alpha * t)
-
-    @staticmethod
-    def func_ttc(t, a, b, c, alpha, beta):
-        """
-        Exponential function for a two time constants model (TTC).
-        """
-        return a - b * np.exp(-alpha * t) - c * np.exp(-beta * t)
-
-    @staticmethod
-    def _get_rtau(rctau, z):
-        """
-        Determine tau and resistor values for any SOC.
-        """
-
-        # determine index where z is close to soc parameters
-        soc = np.arange(0.1, 1.0, 0.1)[::-1]
-        idx = abs(soc - z).argmin()
-
-        # return resistor and tau values at z
-        tau1 = rctau[:, 0][idx]
-        tau2 = rctau[:, 1][idx]
-        r0 = rctau[:, 2][idx]
-        r1 = rctau[:, 3][idx]
-        r2 = rctau[:, 4][idx]
-        return tau1, tau2, r0, r1, r2
-
     def v_ecm(self, soc, ocv, rctau):
         """
         Determine voltage from equivalent circuit model.
@@ -273,7 +283,7 @@ class EquivCircModel:
             i = self.current[k]
 
             # get parameters at state of charge
-            tau1, tau2, r0, r1, r2 = self._get_rtau(rctau, soc[k])
+            tau1, tau2, r0, r1, r2 = self.get_rtau(rctau, soc[k])
 
             # voltage in r0 resistor
             v0[k] = r0 * i
