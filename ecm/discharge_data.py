@@ -97,3 +97,19 @@ class DischargeData:
         data.time = data.time[id0:id2 + 1] - data.time[id0:id2 + 1].min()
 
         return data
+
+    @classmethod
+    def process_discharge_only(cls, path):
+        """
+        """
+        data = cls(path)
+
+        id0, id1, _, _ = data.get_idx()
+
+        data.ti = data.time[id0]
+        data.tf = data.time[id1]
+        data.current = data.current[id0:id1 + 1]
+        data.voltage = data.voltage[id0:id1 + 1]
+        data.time = data.time[id0:id1 + 1] - data.time[id0:id1 + 1][0]
+
+        return data

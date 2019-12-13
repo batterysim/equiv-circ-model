@@ -39,7 +39,7 @@ class EquivCircModel:
         Determine curve fit coefficients from HPPC data.
     rctau_ttc(coeff)
         Determine RC values for each 10% SOC section.
-    v_ecm(soc, ocv, rctau)
+    vt(soc, ocv, rctau)
         Determine battery voltage from equivalent circuit model.
     """
 
@@ -269,7 +269,7 @@ class EquivCircModel:
 
         return rctau
 
-    def v_ecm(self, soc, ocv, rctau):
+    def vt(self, soc, ocv, rctau):
         """
         Determine voltage from equivalent circuit model.
         """
@@ -298,5 +298,5 @@ class EquivCircModel:
             tm4 = r2 * (1 - np.exp(-dt[k - 1] / tau2)) * i
             v2[k] = tm3 + tm4
 
-        vecm = ocv + v0 + v1 + v2
-        return vecm
+        vt = ocv + v0 + v1 + v2
+        return vt

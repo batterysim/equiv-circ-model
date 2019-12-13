@@ -8,27 +8,28 @@ The [Anaconda][] or [Miniconda][] distribution of Python 3.7 is recommended for 
 
 ## Usage
 
-The main entry point for the program is `__main__.py` which is located in the `ecm` package. To execute the equivalent circuit model, clone this project then run the following terminal command from within the repository:
+The main entry point for the program is `__main__.py` which is located in the `ecm` package. As an example, to run the ECM for a single battery cell and compare the results to HPPC data:
 
 ```bash
-$ python ecm --vbatt
+# Run this command from within the `equiv-circ-model` directory
+$ python ecm --runhppc
 ```
 
-Use the help command to view the other command line options:
+Use the optional `--help` command to view the available arguments:
 
 ```bash
 $ python ecm --help
 
-usage: ecm [-h] [-vd] [-vh] [-cv] [-rc] [-so] [-vb]
+usage: ecm [-h] [-vd] [-vh] [-rf] [-rc] [-rs] [-rh]
 
 optional arguments:
-  -h, --help       show this help message and exit
-  -vd, --viewdis   view discharge data
-  -vh, --viewhppc  view hppc data
-  -cv, --curvefit  curve fit hppc data
-  -rc, --rctau     rc params from hppc data
-  -so, --sococv    soc and ocv from hppc data
-  -vb, --vbatt     ecm voltage from hppc data
+  -h, --help            show this help message and exit
+  -vd, --viewdischarge  view discharge data
+  -vh, --viewhppc       view HPPC data
+  -rf, --runfit         run curve fit of HPPC data
+  -rc, --runrctau       run RC parameters for HPPC data
+  -rs, --runsococv      run RC parameters for HPPC data
+  -rh, --runhppc        run cell ECM and compare to HPPC data
 ```
 
 ## Project structure
