@@ -1,5 +1,6 @@
 # flake8: noqa
 
+from .run_discharge_pack import run_discharge_pack
 from .run_hppc_curvefit import run_hppc_curvefit
 from .run_hppc_rctau import run_hppc_rctau
 from .run_hppc_sococv import run_hppc_sococv

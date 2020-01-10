@@ -137,7 +137,7 @@ class EquivCircModel:
 
         return z
 
-    def ocv(self, soc, pts=False):
+    def ocv(self, soc, pts=False, vz_pts=None):
         """
         Linearly interpolate the open circuit voltage (OCV) from state of charge
         points and voltage points in the HPPC data. Points are at 10% intervals
@@ -166,16 +166,22 @@ class EquivCircModel:
         z_pts : vector, optional
             State of charge [-] at 100% SOC to 0% SOC in 10% increments.
         """
-        id0 = self.idx[0]
-        v_pts = np.append(self.voltage[id0], self.voltage[-1])
-        z_pts = np.append(soc[id0], soc[-1])
-
         if pts is True:
+            id0 = self.idx[0]
+            v_pts = np.append(self.voltage[id0], self.voltage[-1])
+            z_pts = np.append(soc[id0], soc[-1])
             i_pts = np.append(self.current[id0], self.current[-1])
             t_pts = np.append(self.time[id0], self.time[-1])
             ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
             return ocv, i_pts, t_pts, v_pts, z_pts
+        elif vz_pts is not None:
+            v_pts, z_pts = vz_pts
+            ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
+            return ocv
         else:
+            id0 = self.idx[0]
+            v_pts = np.append(self.voltage[id0], self.voltage[-1])
+            z_pts = np.append(soc[id0], soc[-1])
             ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
             return ocv
 
