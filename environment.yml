@@ -1,0 +1,11 @@
+name: ecm
+
+channels:
+  - defaults
+
+dependencies:
+  - python
+  - matplotlib
+  - numpy
+  - pandas
+  - scipy

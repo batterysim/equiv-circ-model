@@ -32,6 +32,40 @@ optional arguments:
   -rh, --runhppc        run cell ECM and compare to HPPC data
 ```
 
+A requirements file is provided for running the ECM in a virtual environment using pip.
+
+```bash
+# Create a new virtual environment
+python -m venv env
+
+# Activate the environment
+source env/bin/activate
+
+# Install packages needed for the ECM
+pip install -r requirements.txt
+
+# Deactivate the environment
+deactivate
+
+# Remove the environment by deleting the `env` folder
+```
+
+An environment yaml file is also provided for running the ECM in a conda environment.
+
+```bash
+# Create a new conda environment and install packages needed for the ECM
+conda env create -f environment.yml
+
+# Activate the environment
+conda activate ecm
+
+# Deactivate the environment
+conda deactivate
+
+# Remove the environment and its installed packages
+conda env remove -n ecm
+```
+
 ## Project structure
 
 **data** - This folder contains the experiment data for developing the ECM.
