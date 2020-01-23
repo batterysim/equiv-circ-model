@@ -1,29 +1,9 @@
-""""
-Parameters for the Nissan Leaf battery cell, battery module, and data files.
+"""
+Parameters for the 2013 Nissan Leaf battery cell, battery module, and
+associated data files.
 
-Parameters
-----------
-a_surf : float
-    Surface area of battery cell [m²]
-cp : float
-    Heat capacity of battery cell [J/(kg K)]
-h_conv : float
-    Convective heat transfer coefficient [W/(m² K)]
-eta_chg : float
-    Coulombic efficiency of battery cell for charge [-]
-eta_dis : float
-    Coulombic efficiency of battery cell for discharge [-]
-m_cell : float
-    Mass of a single battery cell [kg]
-q_cell : float
-    Total capacity of battery cell [Ah]
-tinf : float
-    Ambient temperature [K]
-
-Note
-----
-Rated capacity of cell is stated as 33.1 Ah. According to Hsin's email, use
-32-33 Ah for HPPC tests. According to Hsin's email, use 30.6 Ah for the
+Note: Rated capacity of cell is stated as 33.1 Ah. According to Hsin's email,
+use 32-33 Ah for HPPC tests. According to Hsin's email, use 30.6 Ah for the
 discharge tests.
 """
 
@@ -54,6 +34,7 @@ q_cell = 30.6
 # Ambient temperature [K]
 tinf = 298.15
 
+# Data files for HPPC and discharge tests
 datafiles = {
     'hppc': 'data/NissanLeaf-cell-Low-Current-HPPC-25C-2.csv',
     'bitrode_1c': 'data/1C-Discharge-Bitrode-data.csv',
