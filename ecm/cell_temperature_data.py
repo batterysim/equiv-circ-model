@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 
 
-class TemperatureData:
+class CellTemperatureData:
     """
-    Temperature data from charge/discharge test.
+    Battery cell temperature data from charge/discharge test.
     """
 
     def __init__(self, path, ti, tf):

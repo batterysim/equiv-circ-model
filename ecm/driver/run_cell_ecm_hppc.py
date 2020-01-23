@@ -1,16 +1,16 @@
 import params
 import plotter
 
-from hppc_data import HppcData
+from cell_hppc_data import CellHppcData
 from equiv_circ_model import EquivCircModel
 
 
-def run_hppc_cell():
+def run_cell_ecm_hppc():
     """
     """
 
     file = params.datafiles['hppc']
-    data = HppcData.process(file)
+    data = CellHppcData.process(file)
 
     ecm = EquivCircModel(data, params)
     soc = ecm.soc()

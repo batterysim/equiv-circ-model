@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-class HppcData:
+class CellHppcData:
     """
     Battery cell data from HPPC test.
     """

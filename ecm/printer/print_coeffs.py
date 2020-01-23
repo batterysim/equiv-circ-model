@@ -12,7 +12,7 @@ def print_coeffs(ecm):
     coeffs_ttc = ecm.curve_fit_coeff(func_ttc, 5)
 
     print(f"=== Curve Fit Coefficients ===\n")
-    print('\n--- Coefficients from OTC ---')
+    print('--- Coefficients from OTC ---')
     print('a\tb\talpha')
     for c in coeffs_otc:
         print(f'{c[0]:.4f}\t{c[1]:.4f}\t{c[2]:.4f}')
@@ -21,3 +21,4 @@ def print_coeffs(ecm):
     print('\na\tb\tc\talpha\tbeta')
     for c in coeffs_ttc:
         print(f'{c[0]:.4f}\t{c[1]:.4f}\t{c[2]:.4f}\t{c[3]:.4f}\t{c[4]:.4f}')
+    print('')

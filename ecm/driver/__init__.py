@@ -1,10 +1,11 @@
 # flake8: noqa
 
-from .run_discharge_pack import run_discharge_pack
-from .run_hppc_curvefit import run_hppc_curvefit
-from .run_hppc_rctau import run_hppc_rctau
-from .run_hppc_sococv import run_hppc_sococv
-from .run_hppc_cell import run_hppc_cell
+from .view_cell_discharge_data import view_cell_discharge_data
+from .view_cell_hppc_data import view_cell_hppc_data
 
-from .view_discharge_data import view_discharge_data
-from .view_hppc_data import view_hppc_data
+from .run_cell_hppc_curvefit import run_cell_hppc_curvefit
+from .run_cell_hppc_rctau import run_cell_hppc_rctau
+from .run_cell_hppc_sococv import run_cell_hppc_sococv
+from .run_cell_ecm_hppc import run_cell_ecm_hppc
+
+from .run_pack_ecm_discharge import run_pack_ecm_discharge

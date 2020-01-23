@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-class DischargeData:
+class CellDischargeData:
     """
     Battery cell data from discharge test.
     """
@@ -101,6 +101,7 @@ class DischargeData:
     @classmethod
     def process_discharge_only(cls, path):
         """
+        Process the original discharge data for just the discharge portion.
         """
         data = cls(path)
 

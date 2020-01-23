@@ -7,53 +7,47 @@ def main():
 
     # Command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-vd', '--viewdischarge', action='store_true', help='view discharge data')
-    parser.add_argument('-vh', '--viewhppc', action='store_true', help='view HPPC data')
-    parser.add_argument('-rf', '--runfit', action='store_true', help='run curve fit of HPPC data')
-    parser.add_argument('-rc', '--runrctau', action='store_true', help='run RC parameters for HPPC data')
-    parser.add_argument('-rs', '--runsococv', action='store_true', help='run RC parameters for HPPC data')
-    parser.add_argument('-rh', '--runhppc', action='store_true', help='run cell ECM and compare to HPPC data')
-    parser.add_argument('-rd', '--rundispack', action='store_true', help='run discharge battery pack model')
+    parser.add_argument('-vd', '--viewcelldis', action='store_true', help='view battery cell discharge data')
+    parser.add_argument('-vh', '--viewcellhppc', action='store_true', help='view battery cell HPPC data')
+    parser.add_argument('-rf', '--runcellfit', action='store_true', help='run curve fit of battery cell HPPC data')
+    parser.add_argument('-rc', '--runcellrctau', action='store_true', help='run RC parameters for battery cell HPPC data')
+    parser.add_argument('-rs', '--runcellsococv', action='store_true', help='run SOC and OCV for battery cell HPPC data')
+    parser.add_argument('-re', '--runcellecm', action='store_true', help='run ECM for battery cell and compare to HPPC data')
+    parser.add_argument('-rd', '--runpackdis', action='store_true', help='run ECM for battery pack at constant discharge')
     args = parser.parse_args()
 
     # Setup logging
     logging.basicConfig(format='%(message)s', level=logging.INFO)
-    logging.info('Start equivalent circuit model (ECM) program...')
+    logging.info('Start equivalent circuit model...')
 
-    # View plots of the discharge data and associated temperatures
-    if args.viewdischarge:
-        logging.info('View discharge data...')
-        driver.view_discharge_data()
+    # Handle command line arguments
+    if args.viewcelldis:
+        logging.info('View battery cell discharge and temperature data...')
+        driver.view_cell_discharge_data()
 
-    # View plots of the HPPC data.
-    elif args.viewhppc:
-        logging.info('View HPPC data...')
-        driver.view_hppc_data()
+    elif args.viewcellhppc:
+        logging.info('View battery cell HPPC data...')
+        driver.view_cell_hppc_data()
 
-    # Run curve fit of the HPPC battery cell data
-    elif args.runfit:
-        logging.info('Run curve fit of the HPPC battery cell data...')
-        driver.run_hppc_curvefit()
+    elif args.runcellfit:
+        logging.info('Run curve fit of the battery cell HPPC data...')
+        driver.run_cell_hppc_curvefit()
 
-    # Run RC parameters for the HPPC battery cell data
-    elif args.runrctau:
-        logging.info('Run RC parameters for the HPPC battery cell data...')
-        driver.run_hppc_rctau()
+    elif args.runcellrctau:
+        logging.info('Run RC parameters for the battery cell HPPC data...')
+        driver.run_cell_hppc_rctau()
 
-    # Run state of charge (SOC) and open circuit voltage (OCV) from HPPC data
-    elif args.runsococv:
-        logging.info('Run SOC and OCV from HPPC battery cell data...')
-        driver.run_hppc_sococv()
+    elif args.runcellsococv:
+        logging.info('Run SOC and OCV for the battery cell HPPC data...')
+        driver.run_cell_hppc_sococv()
 
-    # Run a single cell ECM and compare to HPPC data
-    elif args.runhppc:
-        logging.info('Run single cell ECM and compare to HPPC battery cell data...')
-        driver.run_hppc_cell()
+    elif args.runcellecm:
+        logging.info('Run ECM for battery cell and compare to HPPC data...')
+        driver.run_cell_ecm_hppc()
 
-    # Run constant discharge battery pack model
-    elif args.rundispack:
-        logging.info('Run constant discharge battery pack model...')
-        driver.run_discharge_pack()
+    elif args.runpackdis:
+        logging.info('Run ECM for battery pack at constant discharge...')
+        driver.run_pack_ecm_discharge()
 
     # Log message if there is no input arguments
     else:

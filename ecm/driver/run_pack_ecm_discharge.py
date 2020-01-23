@@ -12,13 +12,13 @@ import numpy as np
 import params
 import plotter
 
-from discharge_data import DischargeData
+from cell_discharge_data import CellDischargeData
+from cell_hppc_data import CellHppcData
 from equiv_circ_model import EquivCircModel
-from hppc_data import HppcData
 from thermal_model import ThermalModel
 
 
-def run_discharge_pack():
+def run_pack_ecm_discharge():
     """
     """
 
@@ -45,7 +45,7 @@ def run_discharge_pack():
     # ----------------------------------------------------------------------------
 
     file_hppc = params.datafiles['hppc']
-    data_hppc = HppcData.process(file_hppc)
+    data_hppc = CellHppcData.process(file_hppc)
 
     ecm = EquivCircModel(data_hppc, params)
     soc = ecm.soc()
@@ -57,7 +57,7 @@ def run_discharge_pack():
     # Discharge data
     # ----------------------------------------------------------------------------
 
-    data_dis = DischargeData.process_discharge_only(params.datafiles['bitrode_1c'])
+    data_dis = CellDischargeData.process_discharge_only(params.datafiles['bitrode_1c'])
 
     ecm.current = data_dis.current
     ecm.voltage = data_dis.voltage

@@ -2,17 +2,17 @@ import params
 import plotter
 import printer
 
-from hppc_data import HppcData
+from cell_hppc_data import CellHppcData
 from equiv_circ_model import EquivCircModel
 
 
-def run_hppc_curvefit():
+def run_cell_hppc_curvefit():
     """
     here
     """
 
     file = params.datafiles['hppc']
-    data = HppcData.process(file)
+    data = CellHppcData.process(file)
     ecm = EquivCircModel(data, params)
 
     printer.print_parameters(params)
