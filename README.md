@@ -6,32 +6,6 @@ This repository contains Python code for running an equivalent circuit model (EC
 
 The [Anaconda][] or [Miniconda][] distribution of Python 3.7 is recommended for this project. After setting up Python, the following packages are required: Matplotlib, NumPy, Pandas, and SciPy.
 
-## Usage
-
-The main entry point for the program is `__main__.py` which is located in the `ecm` package. As an example, to run the ECM for a single battery cell and compare the results to HPPC data:
-
-```bash
-# Run this command from within the `equiv-circ-model` directory
-$ python ecm --runhppc
-```
-
-Use the optional `--help` command to view the available arguments:
-
-```bash
-$ python ecm --help
-
-usage: ecm [-h] [-vd] [-vh] [-rf] [-rc] [-rs] [-rh]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -vd, --viewdischarge  view discharge data
-  -vh, --viewhppc       view HPPC data
-  -rf, --runfit         run curve fit of HPPC data
-  -rc, --runrctau       run RC parameters for HPPC data
-  -rs, --runsococv      run RC parameters for HPPC data
-  -rh, --runhppc        run cell ECM and compare to HPPC data
-```
-
 A requirements file is provided for running the ECM in a virtual environment using pip.
 
 ```bash
@@ -64,6 +38,33 @@ conda deactivate
 
 # Remove the environment and its installed packages
 conda env remove -n ecm
+```
+
+## Usage
+
+The main entry point for the program is `__main__.py` which is located in the `ecm` package. As an example, to run the equivalent circuit model for a battery cell and compare the results to HPPC data:
+
+```bash
+# Run this command from within the `equiv-circ-model` directory
+$ python ecm --runcellecm
+```
+
+Use the optional `--help` command to view the available arguments:
+
+```bash
+$ python ecm --help
+
+usage: ecm [-h] [-vd] [-vh] [-rf] [-rc] [-rs] [-re] [-rd]
+
+optional arguments:
+  -h,  --help           show this help message and exit
+  -vd, --viewcelldis    view battery cell discharge data
+  -vh, --viewcellhppc   view battery cell HPPC data
+  -rf, --runcellfit     run curve fit of battery cell HPPC data
+  -rc, --runcellrctau   run RC parameters for battery cell HPPC data
+  -rs, --runcellsococv  run SOC and OCV for battery cell HPPC data
+  -re, --runcellecm     run ECM for battery cell and compare to HPPC data
+  -rd, --runpackdis     run ECM for battery pack at constant discharge
 ```
 
 ## Project structure
