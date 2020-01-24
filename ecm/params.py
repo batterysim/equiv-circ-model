@@ -36,11 +36,11 @@ tinf = 298.15
 
 # Data files for HPPC and discharge tests
 datafiles = {
-    'hppc': 'data/NissanLeaf-cell-Low-Current-HPPC-25C-2.csv',
-    'bitrode_1c': 'data/1C-Discharge-Bitrode-data.csv',
-    'bitrode_2c': 'data/2C-Discharge-Bitrode-data.csv',
-    'bitrode_3c': 'data/3C-Discharge-Bitrode-data.csv',
-    'temp_1c': 'data/Temperature-1C-discharge.lvm',
-    'temp_2c': 'data/Temperature-2C-discharge.lvm',
-    'temp_3c': 'data/Temperature-3C-discharge.lvm'
+    'cell_discharge_1c': 'data/cell-discharge-bitrode-1c.csv',
+    'cell_discharge_2c': 'data/cell-discharge-bitrode-2c.csv',
+    'cell_discharge_3c': 'data/cell-discharge-bitrode-3c.csv',
+    'cell_temperature_1c': 'data/cell-discharge-temperature-1c.lvm',
+    'cell_temperature_2c': 'data/cell-discharge-temperature-2c.lvm',
+    'cell_temperature_3c': 'data/cell-discharge-temperature-3c.lvm',
+    'cell_hppc': 'data/cell-low-current-hppc-25c-2.csv',
 }

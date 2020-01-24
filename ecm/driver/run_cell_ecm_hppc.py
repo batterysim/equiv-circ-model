@@ -9,7 +9,7 @@ def run_cell_ecm_hppc():
     """
     """
 
-    file = params.datafiles['hppc']
+    file = params.datafiles['cell_hppc']
     data = CellHppcData.process(file)
 
     ecm = EquivCircModel(data, params)

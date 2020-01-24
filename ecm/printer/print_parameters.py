@@ -8,8 +8,8 @@ def print_parameters(pm):
     params_string = f"""
     === Data Files ===
 
-    {'hppc':15} {pm.datafiles['hppc']:>12}
-    {'bitrode_1c':15} {pm.datafiles['bitrode_1c']:>12}
+    {'hppc':15} {pm.datafiles['cell_hppc']:>12}
+    {'bitrode_1c':15} {pm.datafiles['cell_discharge_1c']:>12}
 
     === Cell Parameters ===
 

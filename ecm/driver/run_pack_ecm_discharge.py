@@ -44,7 +44,7 @@ def run_pack_ecm_discharge():
     # HPPC data
     # ----------------------------------------------------------------------------
 
-    file_hppc = params.datafiles['hppc']
+    file_hppc = params.datafiles['cell_hppc']
     data_hppc = CellHppcData.process(file_hppc)
 
     ecm = EquivCircModel(data_hppc, params)
@@ -57,7 +57,7 @@ def run_pack_ecm_discharge():
     # Discharge data
     # ----------------------------------------------------------------------------
 
-    data_dis = CellDischargeData.process_discharge_only(params.datafiles['bitrode_1c'])
+    data_dis = CellDischargeData.process_discharge_only(params.datafiles['cell_discharge_1c'])
 
     ecm.current = data_dis.current
     ecm.voltage = data_dis.voltage

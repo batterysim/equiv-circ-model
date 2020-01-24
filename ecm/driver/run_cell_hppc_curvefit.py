@@ -11,7 +11,7 @@ def run_cell_hppc_curvefit():
     here
     """
 
-    file = params.datafiles['hppc']
+    file = params.datafiles['cell_hppc']
     data = CellHppcData.process(file)
     ecm = EquivCircModel(data, params)
 

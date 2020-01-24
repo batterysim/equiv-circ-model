@@ -8,7 +8,7 @@ from equiv_circ_model import EquivCircModel
 def run_cell_hppc_rctau():
     """
     """
-    file = params.datafiles['hppc']
+    file = params.datafiles['cell_hppc']
     data = CellHppcData.process(file)
 
     ecm = EquivCircModel(data, params)
