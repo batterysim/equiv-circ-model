@@ -13,4 +13,7 @@ from .plot_hppc_data import plot_hppc_proc
 from .plot_curvefit import plot_curvefit
 from .plot_soc_ocv import plot_soc_ocv
 from .plot_vt import plot_vt
+
+from .plot_module_hppc import plot_module_hppc
+
 from .utils import show_plots

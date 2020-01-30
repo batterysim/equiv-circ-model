@@ -9,6 +9,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-vd', '--viewcelldis', action='store_true', help='view battery cell discharge data')
     parser.add_argument('-vh', '--viewcellhppc', action='store_true', help='view battery cell HPPC data')
+    parser.add_argument('-vm', '--viewmodulehppc', action='store_true', help='view battery module HPPC data')
     parser.add_argument('-rf', '--runcellfit', action='store_true', help='run curve fit of battery cell HPPC data')
     parser.add_argument('-rc', '--runcellrctau', action='store_true', help='run RC parameters for battery cell HPPC data')
     parser.add_argument('-rs', '--runcellsococv', action='store_true', help='run SOC and OCV for battery cell HPPC data')
@@ -28,6 +29,10 @@ def main():
     elif args.viewcellhppc:
         logging.info('View battery cell HPPC data...')
         driver.view_cell_hppc_data()
+
+    elif args.viewmodulehppc:
+        logging.info('View battery module HPPC data...')
+        driver.view_module_hppc_data()
 
     elif args.runcellfit:
         logging.info('Run curve fit of the battery cell HPPC data...')

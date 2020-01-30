@@ -43,4 +43,11 @@ datafiles = {
     'cell_temperature_2c': 'data/cell-discharge-temperature-2c.lvm',
     'cell_temperature_3c': 'data/cell-discharge-temperature-3c.lvm',
     'cell_hppc': 'data/cell-low-current-hppc-25c-2.csv',
+    'module1_hppc_23deg': 'data/module1-electchar-65ah-23deg.csv',
+    'module1_hppc_45deg': 'data/module1-electchar-65ah-45deg.csv',
+    'module2_hppc_23deg': 'data/module2-electchar-65ah-23deg.csv',
+    'module2_hppc_45deg': 'data/module2-electchar-65ah-45deg.csv',
+    'module3_hppc_23deg': 'data/module3-electchar-65ah-23deg.csv',
+    'module3_hppc_45deg': 'data/module3-electchar-65ah-45deg.csv',
+    'module123': 'data/module123-ir-65ah-us06.csv',
 }

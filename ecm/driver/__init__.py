@@ -2,6 +2,7 @@
 
 from .view_cell_discharge_data import view_cell_discharge_data
 from .view_cell_hppc_data import view_cell_hppc_data
+from .view_module_hppc_data import view_module_hppc_data
 
 from .run_cell_hppc_curvefit import run_cell_hppc_curvefit
 from .run_cell_hppc_rctau import run_cell_hppc_rctau
