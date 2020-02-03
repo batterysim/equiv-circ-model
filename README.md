@@ -4,7 +4,7 @@ This repository contains Python code for running an equivalent circuit model (EC
 
 ## Installation
 
-The [Anaconda][https://www.anaconda.com] or [Miniconda][https://conda.io/miniconda.html] distribution of Python 3 is recommended for this project. The `ecm` package requires Matplotlib, NumPy, Pandas, and SciPy.
+The [Anaconda](https://www.anaconda.com) or [Miniconda](https://conda.io/miniconda.html) distribution of Python 3 is recommended for this project. The `ecm` package requires Matplotlib, NumPy, Pandas, and SciPy.
 
 The simplest way to install the ECM package is with pip. This can be done from within the equiv-circ-model directory:
 
