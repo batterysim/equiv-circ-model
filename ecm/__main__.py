@@ -23,35 +23,35 @@ def main():
 
     # Handle command line arguments
     if args.viewcelldis:
-        logging.info('View battery cell discharge and temperature data...')
+        logging.info('View battery cell discharge and temperature data...')  # ✅✅
         driver.view_cell_discharge_data()
 
     elif args.viewcellhppc:
-        logging.info('View battery cell HPPC data...')
+        logging.info('View battery cell HPPC data...')  # ✅✅
         driver.view_cell_hppc_data()
 
     elif args.viewmodulehppc:
-        logging.info('View battery module HPPC data...')
+        logging.info('View battery module HPPC data...')  # ✅✅
         driver.view_module_hppc_data()
 
     elif args.runcellfit:
-        logging.info('Run curve fit of the battery cell HPPC data...')
+        logging.info('Run curve fit of the battery cell HPPC data...')  # ✅✅
         driver.run_cell_hppc_curvefit()
 
     elif args.runcellrctau:
-        logging.info('Run RC parameters for the battery cell HPPC data...')
+        logging.info('Run RC parameters for the battery cell HPPC data...')  # ✅✅
         driver.run_cell_hppc_rctau()
 
     elif args.runcellsococv:
-        logging.info('Run SOC and OCV for the battery cell HPPC data...')
+        logging.info('Run SOC and OCV for the battery cell HPPC data...')  # ✅✅
         driver.run_cell_hppc_sococv()
 
     elif args.runcellecm:
-        logging.info('Run ECM for battery cell and compare to HPPC data...')
+        logging.info('Run ECM for battery cell and compare to HPPC data...')  # ✅
         driver.run_cell_ecm_hppc()
 
     elif args.runpackdis:
-        logging.info('Run ECM for battery pack at constant discharge...')
+        logging.info('Run ECM for battery pack at constant discharge...')  # ✅
         driver.run_pack_ecm_discharge()
 
     # Log message if there is no input arguments

@@ -1,12 +1,19 @@
 # Equivalent circuit model
 
-This repository contains Python code for running an equivalent circuit model (ECM) developed for a 2013 Nissan Leaf battery cell. Model parameters are determined from hybrid pulse power characterization (HPPC) tests conducted at ORNL. The battery cell and its specifications were provided by NREL.
+This repository contains Python code for running an equivalent circuit model (ECM) developed for a 2013 Nissan Leaf battery cell and module. The `ecm` package contains source code for the equivalent circuit model while the `examples` folder provides scripts for running the ECM for a battery cell, module, and pack. Model parameters are determined from hybrid pulse power characterization (HPPC) and discharge tests conducted at ORNL. The battery cell and module specifications were provided by NREL.
 
 ## Installation
 
-The [Anaconda][] or [Miniconda][] distribution of Python 3.7 is recommended for this project. After setting up Python, the following packages are required: Matplotlib, NumPy, Pandas, and SciPy.
+The [Anaconda][https://www.anaconda.com] or [Miniconda][https://conda.io/miniconda.html] distribution of Python 3 is recommended for this project. The `ecm` package requires Matplotlib, NumPy, Pandas, and SciPy.
 
-A requirements file is provided for running the ECM in a virtual environment using pip.
+The simplest way to install the ECM package is with pip. This can be done from within the equiv-circ-model directory:
+
+```bash
+# Install the ecm package
+pip install -e .
+```
+
+A requirements file is provided for running the ECM in a virtual environment using pip:
 
 ```bash
 # Create a new virtual environment
@@ -18,13 +25,16 @@ source env/bin/activate
 # Install packages needed for the ECM
 pip install -r requirements.txt
 
+# From within equiv-circ-model directory, install the ecm package
+pip install -e .
+
 # Deactivate the environment
 deactivate
 
 # Remove the environment by deleting the `env` folder
 ```
 
-An environment yaml file is also provided for running the ECM in a conda environment.
+An environment yaml file is also provided for running the ECM in a conda environment:
 
 ```bash
 # Create a new conda environment and install packages needed for the ECM
@@ -32,6 +42,9 @@ conda env create -f environment.yml
 
 # Activate the environment
 conda activate ecm
+
+# From within equiv-circ-model directory, install the ecm package
+pip install -e .
 
 # Deactivate the environment
 conda deactivate
@@ -42,38 +55,25 @@ conda env remove -n ecm
 
 ## Usage
 
-The main entry point for the program is `__main__.py` which is located in the `ecm` package. As an example, to run the equivalent circuit model for a battery cell and compare the results to HPPC data:
+Examples of using the `ecm` package are provided in the `examples` folder. From within the examples folder, each script can be run from the command line such as:
 
 ```bash
-# Run this command from within the `equiv-circ-model` directory
-$ python ecm --runcellecm
-```
+# View plots of the battery cell HPPC data
+python view_cell_hppc_data.py
 
-Use the optional `--help` command to view the available arguments:
-
-```bash
-$ python ecm --help
-
-usage: ecm [-h] [-vd] [-vh] [-rf] [-rc] [-rs] [-re] [-rd]
-
-optional arguments:
-  -h,  --help           show this help message and exit
-  -vd, --viewcelldis    view battery cell discharge data
-  -vh, --viewcellhppc   view battery cell HPPC data
-  -rf, --runcellfit     run curve fit of battery cell HPPC data
-  -rc, --runcellrctau   run RC parameters for battery cell HPPC data
-  -rs, --runcellsococv  run SOC and OCV for battery cell HPPC data
-  -re, --runcellecm     run ECM for battery cell and compare to HPPC data
-  -rd, --runpackdis     run ECM for battery pack at constant discharge
+# Run the ECM for a battery cell and compare to HPPC data
+python run_cell_hppc_ecm.py
 ```
 
 ## Project structure
 
-**data** - This folder contains the experiment data for developing the ECM.
+**ecm** - Python package containing source code for the equivalent circuit model (ECM).
 
-**ecm** - Python package containing components of the ECM.
+**examples** - Scripts for running various components of the ECM.
 
-**ecm/params.py** - Parameters that define the battery cell along with other variables needed to run the model.
+**examples/data** - Battery test data from a 2013 Nissan Leaf battery cell and module. This data is used for developing and validating the ECM.
+
+**examples/params.py** - Parameters for the 2013 Nissan Leaf battery cell..
 
 ## Contributing
 
@@ -82,6 +82,3 @@ Comments, suggestions, and other feedback can be submitted on the [Issues](https
 ## License
 
 This code is available under the MIT License - see the [LICENSE](LICENSE) file for more information.
-
-[anaconda]: https://www.anaconda.com
-[miniconda]: https://conda.io/miniconda.html
