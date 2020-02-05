@@ -1,5 +1,6 @@
 """
-Run equivalent circuit model (ECM) for battery pack at constant discharge.
+Run equivalent circuit model (ECM) for battery pack under US06 drive cycle
+conditions.
 
 Battery pack where cells are connected in parallel to make a module. The
 modules are connected in series to make a pack.
@@ -13,9 +14,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import params
-from ecm import CellDischargeData
 from ecm import CellHppcData
 from ecm import EquivCircModel
+from ecm import ModulesData
 from ecm import ThermalModel
 from utils import config_ax
 
@@ -51,21 +52,22 @@ _, _, _, v_pts, z_pts = ecm.ocv(soc, pts=True)
 coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)
 rctau = ecm.rctau_ttc(coeffs)
 
-# Battery cell discharge data
+# Battery modules US06 drive cycle data
 # ----------------------------------------------------------------------------
 
-file_dis = 'data/cell-discharge-bitrode-1c.csv'
-data_dis = CellDischargeData.process_discharge_only(file_dis)
+file_us06 = 'data/module123-ir-65ah-us06.csv'
+data_us06 = ModulesData(file_us06)
+data_us06.process()
 
-ecm.current = data_dis.current
-ecm.voltage = data_dis.voltage
-ecm.time = data_dis.time
+ecm.current = data_us06.current
+ecm.voltage = data_us06.voltage
+ecm.time = data_us06.time
 
 soc_dis = ecm.soc()
 ocv_dis = ecm.ocv(soc_dis, vz_pts=(v_pts, z_pts))
 vt_dis = ecm.vt(soc_dis, ocv_dis, rctau)
 
-# Battery pack calculations
+# Calculations for battery pack
 # ----------------------------------------------------------------------------
 
 ocv_cells = np.interp(zi, z_pts[::-1], v_pts[::-1])
@@ -96,34 +98,33 @@ for k in range(n_cells):
     v_cells[k] = vt
 
     icell = i_cells2[k]
-    _, temp_cell = tm.calc_q_temp(i=icell, ocv=ocv, time=data_dis.time, ti=297, vt=vt)
+    _, temp_cell = tm.calc_q_temp(i=icell, ocv=ocv, time=data_us06.time, ti=297, vt=vt)
     temp_cells[k] = temp_cell
 
 # Plot
 # ----------------------------------------------------------------------------
 
 fig, ax = plt.subplots(tight_layout=True)
-ax.plot(data_dis.time, data_dis.current, marker='.')
+ax.plot(data_us06.time, data_us06.current)
 config_ax(ax, xylabels=('Time [s]', 'Current [A]'))
 
 fig, ax = plt.subplots(tight_layout=True)
-ax.plot(data_dis.time, data_dis.voltage, color='C3', marker='.', label='data')
-ax.plot(data_dis.time, vt_dis, label='ecm')
-config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
+ax.plot(data_us06.time, data_us06.voltage, color='C3')
+config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'))
 
 fig, ax = plt.subplots(tight_layout=True)
 for k in range(n_cells):
-    ax.plot(data_dis.time, i_cells2[k], label=f'cell {k+1}')
+    ax.plot(data_us06.time, i_cells2[k], label=f'cell {k+1}')
 config_ax(ax, xylabels=('Time [s]', 'Current [A]'), loc='best')
 
 fig, ax = plt.subplots(tight_layout=True)
 for k in range(n_cells):
-    ax.plot(data_dis.time, v_cells[k], label=f'cell {k+1}')
+    ax.plot(data_us06.time, v_cells[k], label=f'cell {k+1}')
 config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
 
 fig, ax = plt.subplots(tight_layout=True)
 for k in range(n_cells):
-    ax.plot(data_dis.time, temp_cells[k], label=f'cell {k+1}')
+    ax.plot(data_us06.time, temp_cells[k], label=f'cell {k+1}')
 config_ax(ax, xylabels=('Time [s]', 'Temperature [K]'), loc='best')
 
 plt.show()

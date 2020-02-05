@@ -1,5 +1,6 @@
 """
-View plots of data from three modules connected in series.
+View plots of data from three modules connected in series. Data is provided by
+NREL and represents a US06 drive cycle test.
 """
 
 import matplotlib.pyplot as plt
@@ -10,9 +11,11 @@ from utils import config_ax
 # Battery modules US06 data
 # ----------------------------------------------------------------------------
 
+# original data
 file_us06 = 'data/module123-ir-65ah-us06.csv'
 data = ModulesData(file_us06)
 
+# processed data for 600s of US06 drive cycle
 data_proc = ModulesData(file_us06)
 data_proc.process()
 
