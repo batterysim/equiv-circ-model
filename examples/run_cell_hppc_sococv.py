@@ -53,7 +53,7 @@ ax2.tick_params('y', colors='m')
 ax2.set_frame_on(False)
 
 fig, ax = plt.subplots(tight_layout=True)
-ax.plot(z_pts, v_pts, 'm', marker='x')
+ax.plot(z_pts, v_pts, color='C1', marker='x')
 config_ax(ax, xylabels=('State of charge [-]', 'Open circuit voltage [V]'))
 
 plt.show()

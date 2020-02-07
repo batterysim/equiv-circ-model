@@ -56,7 +56,7 @@ for i in range(len(id2)):
     vfit1 = ecm.func_otc(t_scale, *coeffs_otc[i])
     vfit2 = ecm.func_ttc(t_scale, *coeffs_ttc[i])
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_curve, v_curve, 'C3', marker='.', label='data')
     ax.plot(t_curve, vfit1, label='otc')
     ax.plot(t_curve, vfit2, label='ttc')
