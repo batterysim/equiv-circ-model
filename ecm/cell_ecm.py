@@ -2,7 +2,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 
-class EquivCircModel:
+class CellEcm:
     """
     Equivalent circuit model (ECM) developed from HPPC battery cell data.
 

@@ -4,10 +4,10 @@ import pandas as pd
 
 class CellHppcData:
     """
-    Battery cell data from HPPC test.
+    Data from HPPC battey cell test.
     """
 
-    def __init__(self, path):
+    def __init__(self, path, all_data=False):
         """
         Initialize with path to HPPC data file.
 
@@ -15,27 +15,44 @@ class CellHppcData:
         ----------
         path : str
             Path to HPPC data file.
+        all_data : bool
+            By default `all_data=False` will read only the section of HPPC
+            data from the data file. When `all_data=True` then read all the
+            data in the data file.
 
         Attributes
         ----------
         time : vector
-            Time vector for HPPC battery test data [s]
+            Time vector for HPPC battery cell test data [s]
         current : vector
-            Current from HPPC battery during test [A]
+            Current from HPPC battery cell during test [A]
         voltage : vector
-            Voltage from HPPC battery during test [V]
-        data : vector
-            Data flags from HPPC battery test [-]
+            Voltage from HPPC battery cell during test [V]
+        flags : vector
+            Flags for start and stop events in the HPPC battery cell data [-]
         """
         df = pd.read_csv(path)
-        self.time = df['Time(s)'].values
-        self.current = df['Current(A)'].values
-        self.voltage = df['Voltage(V)'].values
-        self.data = df['Data'].fillna(' ').values
+
+        if all_data:
+            self.time = df['Time(s)'].values
+            self.current = df['Current(A)'].values
+            self.voltage = df['Voltage(V)'].values
+            self.flags = df['Data'].fillna(' ').values
+        else:
+            time = df['Time(s)'].values
+            current = df['Current(A)'].values
+            voltage = df['Voltage(V)'].values
+            flags = df['Data'].fillna(' ').values
+
+            ids = np.where(flags == 'S')[0]
+            self.time = time[ids[1]:]
+            self.current = current[ids[1]:]
+            self.voltage = voltage[ids[1]:]
+            self.flags = flags[ids[1]:]
 
     def get_ids(self):
         """
-        Find indices in data that represent the `S` flag. Start and stop
+        Find all indices in data that represent the `S` flag. Start and stop
         procedures in the experiment are depcited by the `S` flag.
 
         Returns
@@ -43,7 +60,7 @@ class CellHppcData:
         ids : vector
             Indices of start and stop points in data.
         """
-        ids = np.where(self.data == 'S')[0]
+        ids = np.where(self.flags == 'S')[0]
         return ids
 
     def get_idq(self):
@@ -55,7 +72,7 @@ class CellHppcData:
         idq : int
             Index of final stop point in data.
         """
-        idq = np.where(self.data == 'Q')[0]
+        idq = np.where(self.flags == 'Q')[0]
         return idq
 
     def get_idx(self):
@@ -103,21 +120,3 @@ class CellHppcData:
         id3 = id2 + 1
         id4 = ids[5::5]
         return id0, id1, id2, id3, id4
-
-    @classmethod
-    def process(cls, path):
-        """
-        Process original HPPC data for use with equivalent circuit model. The
-        S-flag determines start and stop indices `ids` in the data. Data
-        preceding the first start/stop point is removed and remaining data is
-        assigned to class attributes.
-        """
-        data = cls(path)
-
-        ids = data.get_ids()
-        data.time = data.time[ids[1]:]
-        data.current = data.current[ids[1]:]
-        data.voltage = data.voltage[ids[1]:]
-        data.data = data.data[ids[1]:]
-
-        return data

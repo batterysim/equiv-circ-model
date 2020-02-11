@@ -9,16 +9,16 @@ import matplotlib.pyplot as plt
 
 import params
 from ecm import CellHppcData
-from ecm import EquivCircModel
+from ecm import CellEcm
 from utils import config_ax
 
 # Battery cell HPPC data and equivalent circuit model
 # ----------------------------------------------------------------------------
 
-file_hppc = 'data/cell-low-current-hppc-25c-2.csv'
-data = CellHppcData.process(file_hppc)
+file = 'data/cell-low-current-hppc-25c-2.csv'
+data = CellHppcData(file)
 
-ecm = EquivCircModel(data, params)
+ecm = CellEcm(data, params)
 soc = ecm.soc()
 ocv = ecm.ocv(soc)
 coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)
