@@ -50,8 +50,8 @@ class CellEcm:
         self.current = data.current
         self.time = data.time
         self.voltage = data.voltage
-        self.idx = data.get_idx()
-        self.idrc = data.get_idrc()
+        self.idx = data.get_indices_pulse()
+        self.idrc = data.get_indices_discharge()
 
         self.eta_chg = params.eta_chg
         self.eta_dis = params.eta_dis

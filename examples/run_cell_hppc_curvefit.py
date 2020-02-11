@@ -44,7 +44,7 @@ print('')
 # ----------------------------------------------------------------------------
 
 # indices representing start (id2) and end (id4) of curve in each SOC section
-_, _, id2, _, id4 = data.get_idrc()
+_, _, id2, _, id4 = data.get_indices_discharge()
 
 for i in range(len(id2)):
     start = id2[i]
