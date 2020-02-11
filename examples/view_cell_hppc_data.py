@@ -16,7 +16,12 @@ file = 'data/cell-low-current-hppc-25c-2.csv'
 data_all = CellHppcData(file, all_data=True)
 data_hppc = CellHppcData(file)
 
-# Plot original battery cell HPPC data
+ids = data_hppc.get_indices_s()
+idq = data_hppc.get_indices_q()
+idp = data_hppc.get_indices_pulse()
+idd = data_hppc.get_indices_discharge()
+
+# Plot all data from HPPC battery cell test
 # ----------------------------------------------------------------------------
 
 fig, ax = plt.subplots(tight_layout=True)
@@ -46,12 +51,8 @@ ax2.set_ylabel('Voltage [V]', color='C3')
 ax2.tick_params('y', colors='C3')
 ax2.set_frame_on(False)
 
-# Plot processed battery cell HPPC data
+# Plot section of HPPC data from HPPC battery cell test
 # ----------------------------------------------------------------------------
-
-ids = data_hppc.get_ids()
-idq = data_hppc.get_idq()
-idrc = data_hppc.get_idrc()
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(data_hppc.time, data_hppc.current, 'C0')
@@ -63,11 +64,22 @@ fig, ax = plt.subplots(tight_layout=True)
 ax.plot(data_hppc.time, data_hppc.voltage, 'C3')
 ax.plot(data_hppc.time[ids], data_hppc.voltage[ids], 'x', label='ids')
 ax.plot(data_hppc.time[idq], data_hppc.voltage[idq], 'x', label='idq')
-ax.plot(data_hppc.time[idrc[0]], data_hppc.voltage[idrc[0]], 'o', alpha=0.8, mew=0, label='id0')
-ax.plot(data_hppc.time[idrc[1]], data_hppc.voltage[idrc[1]], 'o', alpha=0.8, mew=0, label='id1')
-ax.plot(data_hppc.time[idrc[2]], data_hppc.voltage[idrc[2]], 'o', alpha=0.8, mew=0, label='id2')
-ax.plot(data_hppc.time[idrc[3]], data_hppc.voltage[idrc[3]], 'o', alpha=0.8, mew=0, label='id3')
-ax.plot(data_hppc.time[idrc[4]], data_hppc.voltage[idrc[4]], 'o', alpha=0.8, mew=0, label='id4')
+ax.plot(data_hppc.time[idp[0]], data_hppc.voltage[idp[0]], 'o', alpha=0.8, mew=0, label='idp0')
+ax.plot(data_hppc.time[idp[1]], data_hppc.voltage[idp[1]], 'o', alpha=0.8, mew=0, label='idp1')
+ax.plot(data_hppc.time[idp[2]], data_hppc.voltage[idp[2]], 'o', alpha=0.8, mew=0, label='idp2')
+ax.plot(data_hppc.time[idp[3]], data_hppc.voltage[idp[3]], 'o', alpha=0.8, mew=0, label='idp3')
+ax.plot(data_hppc.time[idp[4]], data_hppc.voltage[idp[4]], 'o', alpha=0.8, mew=0, label='idp4')
+config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
+
+fig, ax = plt.subplots(tight_layout=True)
+ax.plot(data_hppc.time, data_hppc.voltage, 'C3')
+ax.plot(data_hppc.time[ids], data_hppc.voltage[ids], 'x', label='ids')
+ax.plot(data_hppc.time[idq], data_hppc.voltage[idq], 'x', label='idq')
+ax.plot(data_hppc.time[idd[0]], data_hppc.voltage[idd[0]], 'o', alpha=0.8, mew=0, label='idd0')
+ax.plot(data_hppc.time[idd[1]], data_hppc.voltage[idd[1]], 'o', alpha=0.8, mew=0, label='idd1')
+ax.plot(data_hppc.time[idd[2]], data_hppc.voltage[idd[2]], 'o', alpha=0.8, mew=0, label='idd2')
+ax.plot(data_hppc.time[idd[3]], data_hppc.voltage[idd[3]], 'o', alpha=0.8, mew=0, label='idd3')
+ax.plot(data_hppc.time[idd[4]], data_hppc.voltage[idd[4]], 'o', alpha=0.8, mew=0, label='idd4')
 config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
 
 plt.show()
