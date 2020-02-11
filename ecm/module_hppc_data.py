@@ -58,7 +58,7 @@ class ModuleHppcData:
             self.temp_a1 = temp_a1[start:end + 1]
             self.flags = flags[start:end + 1]
 
-    def get_ids(self):
+    def get_indices_s(self):
         """
         Find all indices in data that represent the `S` flag. Start and stop
         procedures in the experiment are depcited by the `S` flag.
@@ -71,25 +71,30 @@ class ModuleHppcData:
         ids = np.where(self.flags == 'S')[0]
         return ids
 
-    def get_idx(self):
+    def get_indices_discharge(self):
         """
-        Construct indices for equivalent circuit model. Indices are in the short
-        pulse section of the HPPC data.
+        Indices representing long discharge section where constant discharge
+        occurs in the HPPC battery cell data. Indices are given for each 10%
+        SOC section.
 
         Returns
         -------
-        id0, id1, id2, id3, id4 : tuple
-            Indices used for equivalent circuit model development.
-            id0 = start of pulse discharge
-            id1 = time step after pulse discharge starts
-            id2 = end of pulse discharge ends
-            id3 = time step after pulse discharge ends
-            id4 = end of pulse discharge rest period
+        id0 : ndarray
+            Indices at start of constant discharge for each 10% SOC section.
+        id1 : ndarray
+            Indices at time step after constant discharge starts for each 10% SOC section.
+        id2 : ndarray
+            Indices at end of constant discharge for each 10% SOC section.
+        id3 : ndarray
+            Indices at time step after constant discharge ends for each 10% SOC section.
+        id4 : ndarray
+            Indices at end of constant discharge rest period for each 10% SOC section.
         """
-        ids = self.get_ids()
-        id0 = ids[0::5]
+        ids = self.get_indices_s()
+        id0 = ids[0::6]
         id1 = id0 + 1
-        id2 = ids[1::5]
-        id3 = id2 + 1
-        id4 = ids[2::5]
+        id2 = ids[1::6]
+        id3 = np.delete(id2, -1)
+        id3 = id3 + 1
+        id4 = ids[2::6]
         return id0, id1, id2, id3, id4
