@@ -22,10 +22,13 @@ class CellEcm:
         Time vector for HPPC battery test data [s]
     voltage : vector
         Voltage from HPPC battery during test [V]
-    idx : tuple
-        Indices from HPPC battery test data.
-    idrc : tuple
-        Indices from HPPC battery test data to determine RC parameters.
+    idp : tuple
+        Indices representing short pulse section in the HPPC battery cell
+        data. Indices are given for each 10% SOC section.
+    idd : tuple
+        Indices representing long discharge section where constant discharge
+        occurs in the HPPC battery cell data. Indices are given for each 10%
+        SOC section.
 
     Methods
     -------
@@ -50,8 +53,8 @@ class CellEcm:
         self.current = data.current
         self.time = data.time
         self.voltage = data.voltage
-        self.idx = data.get_indices_pulse()
-        self.idrc = data.get_indices_discharge()
+        self.idp = data.get_indices_pulse()
+        self.idd = data.get_indices_discharge()
 
         self.eta_chg = params.eta_chg
         self.eta_dis = params.eta_dis
@@ -167,7 +170,7 @@ class CellEcm:
             State of charge [-] at 100% SOC to 0% SOC in 10% increments.
         """
         if pts is True:
-            id0 = self.idx[0]
+            id0 = self.idp[0]
             v_pts = np.append(self.voltage[id0], self.voltage[-1])
             z_pts = np.append(soc[id0], soc[-1])
             i_pts = np.append(self.current[id0], self.current[-1])
@@ -179,7 +182,7 @@ class CellEcm:
             ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
             return ocv
         else:
-            id0 = self.idx[0]
+            id0 = self.idp[0]
             v_pts = np.append(self.voltage[id0], self.voltage[-1])
             z_pts = np.append(soc[id0], soc[-1])
             ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
@@ -202,7 +205,7 @@ class CellEcm:
         coeff : array
             Coefficients at each 10% change in SOC.
         """
-        _, _, id2, _, id4 = self.idrc
+        _, _, id2, _, id4 = self.idd
         nrow = len(id2)
         coeff = np.zeros((nrow, ncoeff))
 
@@ -252,7 +255,7 @@ class CellEcm:
             c2 : float
                 Capacitance in second RC branch [F]
         """
-        id0, id1, id2, _, _, = self.idrc
+        id0, id1, id2, _, _, = self.idd
         nrow = len(id0)
         rctau = np.zeros((nrow, 7))
 
