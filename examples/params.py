@@ -1,5 +1,5 @@
 """
-Parameters for the 2013 Nissan Leaf battery cell.
+Parameters for the 2013 Nissan Leaf battery cell and module.
 
 Note: Rated capacity of cell is stated as 33.1 Ah. According to Hsin's email,
 use 32-33 Ah for HPPC tests. According to Hsin's email, use 30.6 Ah for the
@@ -29,6 +29,9 @@ m_cell = 0.799
 # Total capacity of the battery cell [Ah]
 # q_cell = 32.0
 q_cell = 30.6
+
+# Total capacity of a battery module [Ah]
+q_module = 65.4
 
 # Ambient temperature [K]
 tinf = 298.15
