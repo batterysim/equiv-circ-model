@@ -33,7 +33,7 @@ class ModuleHppcData:
         flags : vector
             Flags for start and stop events in the HPPC battery module data [-]
         """
-        df = pd.read_csv(path, skiprows=17)
+        df = pd.read_csv(path, skiprows=20)
 
         if all_data:
             self.time = df['Total Time'].values

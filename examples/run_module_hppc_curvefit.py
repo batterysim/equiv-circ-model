@@ -14,7 +14,7 @@ from utils import config_ax
 # Battery module HPPC data and equivalent circuit model
 # ----------------------------------------------------------------------------
 
-file = 'data/module1-electchar-65ah-45deg.csv'
+file = 'data/module1-electchar-65ah-23deg.csv'
 data = ModuleHppcData(file)
 ecm = ModuleEcm(data, params)
 

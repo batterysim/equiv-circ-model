@@ -177,7 +177,7 @@ class ModuleEcm:
             ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
             return ocv
         else:
-            id0 = self.idp[0]
+            id0 = self.idd[0]
             v_pts = np.append(self.voltage[id0], self.voltage[-1])
             z_pts = np.append(soc[id0], soc[-1])
             ocv = np.interp(soc, z_pts[::-1], v_pts[::-1])
@@ -251,6 +251,10 @@ class ModuleEcm:
                 Capacitance in second RC branch [F]
         """
         id0, id1, id2, _, _, = self.idd
+        id0 = np.delete(id0, -1)    # indices must be same length as `coeff`
+        id1 = np.delete(id1, -1)
+        id2 = np.delete(id2, -1)
+
         nrow = len(id0)
         rctau = np.zeros((nrow, 7))
 

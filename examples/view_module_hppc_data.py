@@ -1,5 +1,5 @@
 """
-View plots of the battery module HPPC data.
+View plots of the HPPC battery module data.
 """
 
 import matplotlib.pyplot as plt
@@ -10,7 +10,7 @@ from utils import config_ax
 # Data from HPPC battery module test
 # ----------------------------------------------------------------------------
 
-file = 'data/module1-electchar-65ah-45deg.csv'
+file = 'data/module1-electchar-65ah-23deg.csv'
 data_all = ModuleHppcData(file, all_data=True)
 data_hppc = ModuleHppcData(file)
 
