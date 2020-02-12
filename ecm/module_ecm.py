@@ -200,21 +200,21 @@ class ModuleEcm:
         coeff : array
             Coefficients at each 10% change in SOC.
         """
-        _, _, id2, _, id4 = self.idd
-        nrow = len(id2)
+        _, _, _, id3, id4 = self.idd
+        nrow = len(id3)
         coeff = np.zeros((nrow, ncoeff))
 
         for i in range(nrow):
-            start = id2[i]
+            start = id3[i]
             end = id4[i]
-            t_curve = self.time[start:end]
-            v_curve = self.voltage[start:end]
-            t_scale = t_curve - t_curve[0]
+            t = self.time[start:end + 1]
+            t_curve = t - t[0]
+            v_curve = self.voltage[start:end + 1]
             if ncoeff == 3:
-                guess = v_curve[-1], 0.01, 0.01
+                guess = v_curve[-1], 0.0644, 0.0012
             elif ncoeff == 5:
-                guess = v_curve[-1], 0.01, 0.01, 0.001, 0.01
-            popt, pcov = curve_fit(func, t_scale, v_curve, p0=guess)
+                guess = v_curve[-1], 0.0724, 0.0575, 0.0223, 0.0007
+            popt, pcov = curve_fit(func, t_curve, v_curve, p0=guess, maxfev=3000)
             coeff[i] = popt
 
         return coeff

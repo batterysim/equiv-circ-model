@@ -52,7 +52,8 @@ class ModuleHppcData:
             start = ids[21]     # index for start of hppc data
             end = ids[76]       # index for end of hppc data
 
-            self.time = time[start:end + 1]
+            # scale time vector to begin at 0, this helps when calculating curve fit coefficients
+            self.time = time[start:end + 1] - time[start]
             self.current = current[start:end + 1]
             self.voltage = voltage[start:end + 1]
             self.temp_a1 = temp_a1[start:end + 1]
