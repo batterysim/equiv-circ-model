@@ -44,8 +44,9 @@ class CellHppcData:
             voltage = df['Voltage(V)'].values
             flags = df['Data'].fillna(' ').values
 
+            # time vector is scaled to begin at 0, this helps when calculating curve fit coefficients
             ids = np.where(flags == 'S')[0]
-            self.time = time[ids[1]:]
+            self.time = time[ids[1]:] - time[ids[1]]
             self.current = current[ids[1]:]
             self.voltage = voltage[ids[1]:]
             self.flags = flags[ids[1]:]
