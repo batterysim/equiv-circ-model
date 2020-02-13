@@ -14,8 +14,9 @@ from utils import config_ax
 file = 'data/cell-low-current-hppc-25c-2.csv'
 
 data_all = CellHppcData(file, all_data=True)
-data_hppc = CellHppcData(file)
+ids_all = data_all.get_indices_s()
 
+data_hppc = CellHppcData(file)
 ids = data_hppc.get_indices_s()
 idq = data_hppc.get_indices_q()
 idp = data_hppc.get_indices_pulse()
@@ -23,6 +24,11 @@ idd = data_hppc.get_indices_discharge()
 
 # Plot all data from HPPC battery cell test
 # ----------------------------------------------------------------------------
+
+fig, ax = plt.subplots(tight_layout=True)
+ax.plot(data_all.time, data_all.voltage, 'C3', label='data')
+ax.plot(data_all.time[ids_all], data_all.voltage[ids_all], 'x', label='ids all')
+config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(data_all.time, data_all.current, 'C0')
