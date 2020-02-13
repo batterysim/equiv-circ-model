@@ -15,7 +15,7 @@ import numpy as np
 import params
 from ecm import CellDischargeData
 from ecm import CellHppcData
-from ecm import EquivCircModel
+from ecm import CellEcm
 from ecm import ThermalModel
 from utils import config_ax
 
@@ -42,9 +42,9 @@ zi = np.random.uniform(0.95, 1.00, (n_series, n_parallel))
 # ----------------------------------------------------------------------------
 
 file_hppc = 'data/cell-low-current-hppc-25c-2.csv'
-data_hppc = CellHppcData.process(file_hppc)
+data_hppc = CellHppcData(file_hppc)
 
-ecm = EquivCircModel(data_hppc, params)
+ecm = CellEcm(data_hppc, params)
 soc = ecm.soc()
 _, _, _, v_pts, z_pts = ecm.ocv(soc, pts=True)
 
