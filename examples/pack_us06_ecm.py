@@ -20,26 +20,7 @@ from ecm import ModulesData
 from ecm import ThermalModel
 from utils import config_ax
 
-# Parameters for battery pack
-# ----------------------------------------------------------------------------
-
-# number of cells in parallel to make a module
-n_parallel = 3
-
-# number of battery modules in series to make a pack
-n_series = 2
-
-# initial random state of charge (SOC) for each cell, zi units of [-]
-zi = np.random.uniform(0.95, 1.00, (n_series, n_parallel))
-
-# initial random capacity (Q) for each cell, qi units of [Ah]
-# qi = np.random.uniform(29, 30.7, (n_series, n_parallel))
-
-# total capacity [Ah] of battery pack
-# pack capacity is the minimum module capacity
-# q_pack = min(np.sum(qi, axis=1))
-
-# Battery cell ECM from battery cell HPPC data
+# ECM for battery cell
 # ----------------------------------------------------------------------------
 
 file_hppc = 'data/cell-low-current-hppc-25c-2.csv'
@@ -52,7 +33,7 @@ _, _, _, v_pts, z_pts = ecm.ocv(soc, pts=True)
 coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)
 rctau = ecm.rctau_ttc(coeffs)
 
-# Battery modules US06 drive cycle data
+# Data from US06 battery modules (pack) drive cycle test
 # ----------------------------------------------------------------------------
 
 file_us06 = 'data/module123-ir-65ah-us06.csv'
@@ -63,12 +44,25 @@ ecm.current = data_us06.current
 ecm.voltage = data_us06.voltage
 ecm.time = data_us06.time
 
-soc_dis = ecm.soc()
-ocv_dis = ecm.ocv(soc_dis, vz_pts=(v_pts, z_pts))
-vt_dis = ecm.vt(soc_dis, ocv_dis, rctau)
+# soc_dis = ecm.soc()
+# ocv_dis = ecm.ocv(soc_dis, vz_pts=(v_pts, z_pts))
+# vt_dis = ecm.vt(soc_dis, ocv_dis, rctau)
 
 # Calculations for battery pack
 # ----------------------------------------------------------------------------
+
+n_parallel = 3      # number of cells in parallel to make a module
+n_series = 2        # number of battery modules in series to make a pack
+
+# initial random state of charge (SOC) for each cell, zi units of [-]
+zi = np.random.uniform(0.95, 1.00, (n_series, n_parallel))
+
+# initial random capacity (Q) for each cell, qi units of [Ah]
+# qi = np.random.uniform(29, 30.7, (n_series, n_parallel))
+
+# total capacity [Ah] of battery pack
+# pack capacity is the minimum module capacity
+# q_pack = min(np.sum(qi, axis=1))
 
 ocv_cells = np.interp(zi, z_pts[::-1], v_pts[::-1])
 r0_cells = rctau[:, 2].mean() * np.ones((n_series, n_parallel))
