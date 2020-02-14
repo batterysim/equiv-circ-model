@@ -23,8 +23,13 @@ file_cell = 'data/cell-low-current-hppc-25c-2.csv'
 data_cell = CellHppcData(file_cell)
 
 ecm = CellEcm(data_cell, params)
+ecm.q_cell = params.q_module / 2
 soc = ecm.soc()
 _, _, _, v_pts, z_pts = ecm.ocv(soc, pts=True)
+
+print(ecm.q_cell)
+print(v_pts)
+print(z_pts)
 
 coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)
 rctau = ecm.rctau_ttc(coeffs)
@@ -35,10 +40,11 @@ rctau = ecm.rctau_ttc(coeffs)
 file_module = 'data/module1-electchar-65ah-23deg.csv'
 data_module = ModuleHppcData(file_module)
 
-ecm.current = data_module.current
-# ecm.voltage = data_module.voltage
+# Assume branch current is split evenly for two cells in parallel
+# Calculate cell capacity from module capacity for two cells in parallel
+ecm.current = data_module.current / 2
 ecm.time = data_module.time
-# ecm.q_cell = ecm.q_cell * 2
+ecm.q_cell = params.q_module / 2
 
 # Calculations for battery module
 # ----------------------------------------------------------------------------
