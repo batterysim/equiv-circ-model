@@ -1,6 +1,7 @@
 """
 Use ECM for a battery cell to predict battery module voltage. Compare ECM cell
-voltage results to HPPC battery module data.
+voltage results to HPPC battery module data. Battery module consists of 4
+cells in a 2P-2S configuration.
 
              |== Cell ==|       |== Cell ==|
 i_module  ---|          |---*---|          |---*
@@ -26,10 +27,6 @@ ecm = CellEcm(data_cell, params)
 ecm.q_cell = params.q_module / 2
 soc = ecm.soc()
 _, _, _, v_pts, z_pts = ecm.ocv(soc, pts=True)
-
-print(ecm.q_cell)
-print(v_pts)
-print(z_pts)
 
 coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)
 rctau = ecm.rctau_ttc(coeffs)

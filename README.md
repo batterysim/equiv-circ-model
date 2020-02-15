@@ -59,10 +59,10 @@ Examples of using the `ecm` package are provided in the `examples` folder. From 
 
 ```bash
 # View plots of the battery cell HPPC data
-python view_cell_hppc_data.py
+python cell_hppc_data.py
 
 # Run the ECM for a battery cell and compare to HPPC data
-python run_cell_hppc_ecm.py
+python cell_hppc_vt.py
 ```
 
 ## Project structure

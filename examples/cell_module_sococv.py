@@ -34,22 +34,16 @@ ocv_module, _, _, vpts_module, zpts_module = ecm_module.ocv(soc_module, pts=True
 file_cell = 'data/cell-low-current-hppc-25c-2.csv'
 data_cell = CellHppcData(file_cell)
 
+# Assume branch current is split evenly for two cells in parallel. Calculate
+# cell capacity from module capacity for two cells in parallel. Use OCV and
+# SOC points from ECM module to correctly calculate OCV from ECM cell.
 ecm_cell = CellEcm(data_cell, params)
+ecm_cell.current = data_module.current / 2
+ecm_cell.time = data_module.time
 ecm_cell.q_cell = params.q_module / 2
 
 soc_cell = ecm_cell.soc()
-_, _, _, vpts_cell, zpts_cell = ecm_cell.ocv(soc_cell, pts=True)
-
-# Assume branch current is split evenly for two cells in parallel
-# Calculate cell capacity from module capacity for two cells in parallel
-ecm_cell.current = data_module.current / 2
-ecm_cell.time = data_module.time
-# ecm_cell.q_cell = params.q_module / 2
-
-soc_cell2 = ecm_cell.soc()
-# zpts_cell[-1] = soc_cell2[-1]
-vpts_cell2 = vpts_cell * 2
-ocv_cell2 = ecm_cell.ocv(soc_cell2, vz_pts=(vpts_cell2, zpts_cell))
+ocv_cell = ecm_cell.ocv(soc_cell, vz_pts=(vpts_module, zpts_module))
 
 # Print
 # ----------------------------------------------------------------------------
@@ -62,45 +56,23 @@ print('\nitem\tvpts\tzpts')
 for i, (v, z) in enumerate(zip(vpts_module, zpts_module)):
     print(f'{i}\t{vpts_module[i]:.4f}\t{zpts_module[i]:.4f}')
 
-print(f'\nq_cell = {ecm_cell.q_cell} Ah')
-print(f'soc_cell2 max = {max(soc_cell2):.4f}')
-print(f'soc_cell2 min = {min(soc_cell2):.4f}')
-
-print('\nitem\tvpts\tzpts')
-for i, (v, z) in enumerate(zip(vpts_cell, zpts_cell)):
-    print(f'{i}\t{vpts_cell[i]:.4f}\t{zpts_cell[i]:.4f}')
-print('')
-
-print('\nitem\tvpts2\tzpts')
-for i, (v, z) in enumerate(zip(vpts_cell2, zpts_cell)):
-    print(f'{i}\t{vpts_cell2[i]:.4f}\t{zpts_cell[i]:.4f}')
-print('')
-
 # Plot
 # ----------------------------------------------------------------------------
 
-# fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(10, 4.8), tight_layout=True)
-# ax1.plot(data_module.time, data_module.voltage, 'C3')
-# config_ax(ax1, xylabels=('Time [s]', 'Voltage [V]'), title='Module')
-# ax2.plot(data_cell.time, data_cell.voltage, 'C3')
-# config_ax(ax2, xylabels=('Time [s]', 'Voltage [V]'), title='Cell')
-
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(ecm_module.time, soc_module, 'm', label='module')
-ax.plot(ecm_cell.time, soc_cell2, 'k--', label='cell')
-ax.plot(data_cell.time, soc_cell, label='cell hppc')
+ax.plot(ecm_cell.time, soc_cell, 'k--', label='cell')
 config_ax(ax, xylabels=('Time [s]', 'State of charge [-]'), loc='best')
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(soc_module, ocv_module, 'C1', label='module')
 ax.plot(zpts_module, vpts_module, 'C1o', label='module pts')
-ax.plot(soc_cell2, ocv_cell2, 'k--', label='cell')
-ax.plot(zpts_cell, vpts_cell2, 'kx', label='cell pts')
+ax.plot(soc_cell, ocv_cell, 'k--', label='cell')
 config_ax(ax, xylabels=('State of charge [-]', 'Open circuit voltage [V]'), loc='best')
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(ecm_module.time, ocv_module, 'C1', label='module')
-ax.plot(ecm_cell.time, ocv_cell2, 'k--', label='cell')
+ax.plot(ecm_cell.time, ocv_cell, 'k--', label='cell')
 config_ax(ax, xylabels=('Time [s]', 'Open circuit voltage [V]'), loc='best')
 
 plt.show()

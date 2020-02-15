@@ -34,45 +34,22 @@ vt_module = ecm_module.vt(soc_module, ocv_module, rctau_module)
 # ECM for battery cell
 # ----------------------------------------------------------------------------
 
-# file_cell = 'data/cell-low-current-hppc-25c-2.csv'
-# data_cell = CellHppcData(file_cell)
-
-# ecm_cell = CellEcm(data_cell, params)
-
-# # Assume branch current is split evenly for two cells in parallel
-# # Calculate cell capacity from module capacity for two cells in parallel
-# ecm_cell.current = data_module.current / 2
-# ecm_cell.time = data_module.time
-# ecm_cell.q_cell = params.q_module / 2
-
-# soc_cell = ecm_cell.soc()
-# ocv_cell, _, _, vpts_cell, zpts_cell = ecm_cell.ocv(soc_cell, pts=True)
-# coeffs_cell = ecm_cell.curve_fit_coeff(ecm_cell.func_ttc, 5)
-# rctau_cell = ecm_cell.rctau_ttc(coeffs_cell)
-# vt_cell = ecm_cell.vt(soc_cell, ocv_cell, rctau_cell)
-
-# ECM for battery cell
-# ----------------------------------------------------------------------------
-
 file_cell = 'data/cell-low-current-hppc-25c-2.csv'
 data_cell = CellHppcData(file_cell)
 
+# Assume branch current is split evenly for two cells in parallel. Calculate
+# cell capacity from module capacity for two cells in parallel. Use OCV and
+# SOC points from ECM module to correctly calculate OCV from ECM cell.
 ecm_cell = CellEcm(data_cell, params)
+ecm_cell.current = data_module.current / 2
+ecm_cell.time = data_module.time
 ecm_cell.q_cell = params.q_module / 2
 
 soc_cell = ecm_cell.soc()
-_, _, _, vpts_cell, zpts_cell = ecm_cell.ocv(soc_cell, pts=True)
-
-# Assume branch current is split evenly for two cells in parallel
-# Calculate cell capacity from module capacity for two cells in parallel
-ecm_cell.current = data_module.current / 2
-ecm_cell.time = data_module.time
-
-soc_cell = ecm_cell.soc()
-ocv_cell = ecm_cell.ocv(soc_cell, vz_pts=(vpts_cell, zpts_cell))
-coeffs_cell = ecm_cell.curve_fit_coeff(ecm_cell.func_ttc, 5)
-rctau_cell = ecm_cell.rctau_ttc(coeffs_cell)
-vt_cell = ecm_cell.vt(soc_cell, ocv_cell, rctau_cell)
+ocv_cell = ecm_cell.ocv(soc_cell, vz_pts=(vpts_module, zpts_module))
+# coeffs_cell = ecm_cell.curve_fit_coeff(ecm_cell.func_ttc, 5)
+# rctau_cell = ecm_cell.rctau_ttc(coeffs_module)
+vt_cell = ecm_cell.vt(soc_cell, ocv_cell, rctau_module)
 
 # Plot
 # ----------------------------------------------------------------------------
@@ -85,12 +62,13 @@ config_ax(ax, xylabels=('Time [s]', 'State of charge [-]'), loc='best')
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(soc_module, ocv_module, 'C1', label='module')
 ax.plot(zpts_module, vpts_module, 'C1o', label='module pts')
-ax.plot(soc_cell, ocv_cell * 2, 'k--', label='cell')
-ax.plot(zpts_cell, vpts_cell * 2, 'kx', label='cell pts')
+# ax.plot(soc_cell, ocv_cell * 2, 'k--', label='cell')
+# ax.plot(zpts_cell, vpts_cell * 2, 'kx', label='cell pts')
 config_ax(ax, xylabels=('State of charge [-]', 'Open circuit voltage [V]'), loc='best')
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(ecm_module.time, vt_module, 'C3', label='module')
 ax.plot(ecm_cell.time, vt_cell, 'k--', label='cell')
+config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
 
 plt.show()
