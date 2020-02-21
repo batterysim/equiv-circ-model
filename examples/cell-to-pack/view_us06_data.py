@@ -30,11 +30,23 @@ ax.plot(data.time, data.current)
 config_ax(ax, xylabels=('Time [s]', 'Current [A]'))
 
 fig, ax = plt.subplots(tight_layout=True)
+ax.plot(data.time, data.temp_a1, label='temp_a1')
+ax.plot(data.time, data.temp_a2, label='temp_a2')
+ax.plot(data.time, data.temp_a3, label='temp_a3')
+config_ax(ax, xylabels=('Time [s]', 'Temperature [°C]'))
+
+fig, ax = plt.subplots(tight_layout=True)
 ax.plot(data_proc.time, data_proc.voltage, color='C3')
 config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'))
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(data_proc.time, data_proc.current)
 config_ax(ax, xylabels=('Time [s]', 'Current [A]'))
+
+fig, ax = plt.subplots(tight_layout=True)
+ax.plot(data_proc.time, data_proc.temp_a1, label='temp_a1')
+ax.plot(data_proc.time, data_proc.temp_a2, label='temp_a2')
+ax.plot(data_proc.time, data_proc.temp_a3, label='temp_a3')
+config_ax(ax, xylabels=('Time [s]', 'Temperature [°C]'))
 
 plt.show()
