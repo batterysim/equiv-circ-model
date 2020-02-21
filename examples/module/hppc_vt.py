@@ -1,24 +1,23 @@
 """
-Run equivalent circuit model (ECM) for battery cell and compare to HPPC data.
-
-Plot HPPC voltage data and ECM voltage. Plot absolute voltage difference
-between HPPC data and ECM.
+Use HPPC battery module data to develop a battery cell equivalent circuit
+model (ECM). Compare the voltage profile of the cell ECM to the HPPC battery
+module data.
 """
 
 import matplotlib.pyplot as plt
 
 import params
-from ecm import CellHppcData
-from ecm import CellEcm
-from utils import config_ax
+from ecm import ModuleHppcData
+from ecm import ModuleEcm
+from ecm import config_ax
 
-# Battery cell HPPC data and equivalent circuit model
+# Data from HPPC battery module test and equivalent circuit model
 # ----------------------------------------------------------------------------
 
-file = 'data/cell-low-current-hppc-25c-2.csv'
-data = CellHppcData(file)
+file = '../data/module1-electchar-65ah-23deg.csv'
+data = ModuleHppcData(file)
 
-ecm = CellEcm(data, params)
+ecm = ModuleEcm(data, params)
 soc = ecm.soc()
 ocv = ecm.ocv(soc)
 coeffs = ecm.curve_fit_coeff(ecm.func_ttc, 5)

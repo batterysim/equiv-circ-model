@@ -1,6 +1,6 @@
 """
-Calculate state of charge (SOC) and open circuit voltage (OCV) for the battery
-cell using HPPC battery cell data.
+Use HPPC battery cell data to calculate state of charge (SOC) and open circuit
+voltage (OCV) for the battery cell.
 """
 
 import matplotlib.pyplot as plt
@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 import params
 from ecm import CellHppcData
 from ecm import CellEcm
-from utils import config_ax
+from ecm import config_ax
 
 # Battery cell HPPC data and equivalent circuit model
 # ----------------------------------------------------------------------------
 
-file = 'data/cell-low-current-hppc-25c-2.csv'
+file = '../data/cell-low-current-hppc-25c-2.csv'
 data = CellHppcData(file)
 
 ecm = CellEcm(data, params)

@@ -5,12 +5,12 @@ View plots of the HPPC battery module data.
 import matplotlib.pyplot as plt
 
 from ecm import ModuleHppcData
-from utils import config_ax
+from ecm import config_ax
 
 # Data from HPPC battery module test
 # ----------------------------------------------------------------------------
 
-file = 'data/module1-electchar-65ah-23deg.csv'
+file = '../data/module1-electchar-65ah-23deg.csv'
 data_all = ModuleHppcData(file, all_data=True)
 data_hppc = ModuleHppcData(file)
 

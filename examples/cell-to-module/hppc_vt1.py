@@ -1,7 +1,10 @@
 """
-Use ECM for a battery cell to predict battery module voltage. Compare ECM cell
-voltage results to HPPC battery module data. Battery module consists of 4
-cells in a 2P-2S configuration.
+Use HPPC battery cell data to develop a cell ECM. Scale the cell ECM to
+predict the voltage profile from HPPC battery module data. This script models
+each battery cell individually.
+
+The 2013 Nissan Leaf battery module consists of 4 cells in a 2P-2S
+configuration such as:
 
              |== Cell ==|       |== Cell ==|
 i_module  ---|          |---*---|          |---*
@@ -12,15 +15,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import params
-from ecm import ModuleHppcData
 from ecm import CellHppcData
 from ecm import CellEcm
-from utils import config_ax
+from ecm import ModuleHppcData
+from ecm import config_ax
 
 # ECM for battery cell
 # ----------------------------------------------------------------------------
 
-file_cell = 'data/cell-low-current-hppc-25c-2.csv'
+file_cell = '../data/cell-low-current-hppc-25c-2.csv'
 data_cell = CellHppcData(file_cell)
 
 ecm = CellEcm(data_cell, params)
@@ -34,7 +37,7 @@ rctau = ecm.rctau_ttc(coeffs)
 # Data from HPPC battery module test
 # ----------------------------------------------------------------------------
 
-file_module = 'data/module1-electchar-65ah-23deg.csv'
+file_module = '../data/module1-electchar-65ah-23deg.csv'
 data_module = ModuleHppcData(file_module)
 
 # Assume branch current is split evenly for two cells in parallel

@@ -1,6 +1,6 @@
 """
-Calculate state of charge (SOC) and open circuit voltage (OCV) for the HPPC
-battery module data.
+Use HPPC battery module data to calculate state of charge (SOC) and open
+circuit voltage (OCV) for the battery module.
 """
 
 import matplotlib.pyplot as plt
@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 import params
 from ecm import ModuleHppcData
 from ecm import ModuleEcm
-from utils import config_ax
+from ecm import config_ax
 
 # Battery module HPPC data and equivalent circuit model
 # ----------------------------------------------------------------------------
 
-file = 'data/module1-electchar-65ah-23deg.csv'
+file = '../data/module1-electchar-65ah-23deg.csv'
 data = ModuleHppcData(file)
 
 ecm = ModuleEcm(data, params)

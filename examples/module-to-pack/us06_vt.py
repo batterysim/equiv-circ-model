@@ -1,4 +1,13 @@
 """
+Use HPPC battery module data to develop a module ECM. Configure the module
+model to represent a battery pack where 3 modules are in series. Apply a US06
+drive cycle current to the battery pack model. Finally, compare the results to
+the US06 drive cycle data which is from three 2013 Nissan Leaf modules
+connected in series.
+
+           |            |       |            |       |            |
+i_pack  ---|== Module ==|---*---|== Module ==|---*---|== Module ==|---
+           |            |       |            |       |            |
 """
 
 import matplotlib.pyplot as plt
@@ -7,20 +16,22 @@ import params
 from ecm import ModulesData
 from ecm import ModuleHppcData
 from ecm import ModuleEcm
-from utils import config_ax
+from ecm import config_ax
 
-# Data from US06 drive cycle
+# Data
 # ----------------------------------------------------------------------------
 
-file = 'data/module123-ir-65ah-us06.csv'
+# data from US06 drive cycle from three modules in series
+file = '../data/module123-ir-65ah-us06.csv'
 data = ModulesData(file)
 data.process()
 
-# Data from HPPC battery module test and equivalent circuit model
-# ----------------------------------------------------------------------------
-
-file_hppc = 'data/module1-electchar-65ah-23deg.csv'
+# data from HPPC battery module test
+file_hppc = '../data/module1-electchar-65ah-23deg.csv'
 data_hppc = ModuleHppcData(file_hppc)
+
+# Module ECM
+# ----------------------------------------------------------------------------
 
 ecm = ModuleEcm(data_hppc, params)
 soc = ecm.soc()

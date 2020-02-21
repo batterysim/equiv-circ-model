@@ -6,13 +6,13 @@ NREL and represents a US06 drive cycle test.
 import matplotlib.pyplot as plt
 
 from ecm import ModulesData
-from utils import config_ax
+from ecm import config_ax
 
 # Battery modules US06 data
 # ----------------------------------------------------------------------------
 
 # original data
-file_us06 = 'data/module123-ir-65ah-us06.csv'
+file_us06 = '../data/module123-ir-65ah-us06.csv'
 data = ModulesData(file_us06)
 
 # processed data for 600s of US06 drive cycle

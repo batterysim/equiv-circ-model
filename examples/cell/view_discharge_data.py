@@ -7,18 +7,18 @@ import matplotlib.pyplot as plt
 
 from ecm import CellDischargeData
 from ecm import CellTemperatureData
-from utils import config_ax
+from ecm import config_ax
 
 # Data files
 # ----------------------------------------------------------------------------
 
-file_dis_1c = 'data/cell-discharge-bitrode-1c.csv'
-file_dis_2c = 'data/cell-discharge-bitrode-2c.csv'
-file_dis_3c = 'data/cell-discharge-bitrode-3c.csv'
+file_dis_1c = '../data/cell-discharge-bitrode-1c.csv'
+file_dis_2c = '../data/cell-discharge-bitrode-2c.csv'
+file_dis_3c = '../data/cell-discharge-bitrode-3c.csv'
 
-file_temp_1c = 'data/cell-discharge-temperature-1c.lvm'
-file_temp_2c = 'data/cell-discharge-temperature-2c.lvm'
-file_temp_3c = 'data/cell-discharge-temperature-3c.lvm'
+file_temp_1c = '../data/cell-discharge-temperature-1c.lvm'
+file_temp_2c = '../data/cell-discharge-temperature-2c.lvm'
+file_temp_3c = '../data/cell-discharge-temperature-3c.lvm'
 
 # Original cell discharge data
 # ----------------------------------------------------------------------------

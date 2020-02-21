@@ -6,12 +6,12 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 from ecm import CellHppcData
-from utils import config_ax
+from ecm import config_ax
 
 # Data from HPPC battery cell test
 # ----------------------------------------------------------------------------
 
-file = 'data/cell-low-current-hppc-25c-2.csv'
+file = '../data/cell-low-current-hppc-25c-2.csv'
 
 data_all = CellHppcData(file, all_data=True)
 ids_all = data_all.get_indices_s()

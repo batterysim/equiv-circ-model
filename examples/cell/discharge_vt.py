@@ -1,6 +1,7 @@
 """
-Develop a battery cell ECM from HPPC data then compare the model to the
-discharge voltage and temperature data.
+Use HPPC battery cell data to develop a battery cell ECM. Apply current from
+the 1C, 2C, and 3C battery cell discharge tests to the cell model. Compare the
+cell model to the discharge voltage and temperature data.
 """
 
 import matplotlib.pyplot as plt
@@ -11,20 +12,20 @@ from ecm import CellTemperatureData
 from ecm import CellHppcData
 from ecm import CellEcm
 from ecm import ThermalModel
-from utils import config_ax
+from ecm import config_ax
 
 # Data files
 # ----------------------------------------------------------------------------
 
-file_hppc = 'data/cell-low-current-hppc-25c-2.csv'
+file_hppc = '../data/cell-low-current-hppc-25c-2.csv'
 
-file_dis_1c = 'data/cell-discharge-bitrode-1c.csv'
-file_dis_2c = 'data/cell-discharge-bitrode-2c.csv'
-file_dis_3c = 'data/cell-discharge-bitrode-3c.csv'
+file_dis_1c = '../data/cell-discharge-bitrode-1c.csv'
+file_dis_2c = '../data/cell-discharge-bitrode-2c.csv'
+file_dis_3c = '../data/cell-discharge-bitrode-3c.csv'
 
-file_temp_1c = 'data/cell-discharge-temperature-1c.lvm'
-file_temp_2c = 'data/cell-discharge-temperature-2c.lvm'
-file_temp_3c = 'data/cell-discharge-temperature-3c.lvm'
+file_temp_1c = '../data/cell-discharge-temperature-1c.lvm'
+file_temp_2c = '../data/cell-discharge-temperature-2c.lvm'
+file_temp_3c = '../data/cell-discharge-temperature-3c.lvm'
 
 # Processed cell discharge data for just the discharge section
 # ----------------------------------------------------------------------------

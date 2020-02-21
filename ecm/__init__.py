@@ -10,3 +10,5 @@ from .module_hppc_data import ModuleHppcData
 from .modules_data import ModulesData
 
 from .thermal_model import ThermalModel
+
+from .utils import config_ax

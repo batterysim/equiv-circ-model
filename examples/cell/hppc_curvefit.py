@@ -1,25 +1,24 @@
 """
-Run curve fit of the HPPC battery module data. Print curve fit coefficients
-for one time constant (OTC) and two time constant (TTC) functions. OTC
-represents one RC pair and TTC represents two RC pairs.
+Use HPPC battery cell data to determine curve fit coefficients for each SOC
+section. Curve fit coefficients are from one time constant (OTC) and two time
+constant (TTC) functions.OTC represents one RC pair and TTC represents two RC
+pairs.
 """
 
 import matplotlib.pyplot as plt
 
 import params
-from ecm import ModuleHppcData
-from ecm import ModuleEcm
-from utils import config_ax
+from ecm import CellHppcData
+from ecm import CellEcm
+from ecm import config_ax
 
-# Battery module HPPC data and equivalent circuit model
+# Battery cell HPPC data and equivalent circuit model
 # ----------------------------------------------------------------------------
 
-file = 'data/module1-electchar-65ah-23deg.csv'
-data = ModuleHppcData(file)
-ecm = ModuleEcm(data, params)
+file = '../data/cell-low-current-hppc-25c-2.csv'
 
-# indices representing start (id3) and end (id4) of curve in each SOC section
-_, _, _, id3, id4 = data.get_indices_discharge()
+data = CellHppcData(file)
+ecm = CellEcm(data, params)
 
 # Print curve fit coefficients
 # ----------------------------------------------------------------------------
@@ -30,12 +29,12 @@ func_ttc = ecm.func_ttc
 coeffs_otc = ecm.curve_fit_coeff(func_otc, 3)
 coeffs_ttc = ecm.curve_fit_coeff(func_ttc, 5)
 
-print('\nCurve fit coefficients from OTC')
+print('\n--- Curve fit coefficients from OTC ---')
 print('a\tb\talpha')
 for c in coeffs_otc:
     print(f'{c[0]:.4f}\t{c[1]:.4f}\t{c[2]:.4f}')
 
-print('\nCurve fit coefficients from TTC')
+print('\n--- Curve fit coefficients from TTC ---')
 print('a\tb\tc\talpha\tbeta')
 for c in coeffs_ttc:
     print(f'{c[0]:.4f}\t{c[1]:.4f}\t{c[2]:.4f}\t{c[3]:.4f}\t{c[4]:.4f}')
@@ -44,8 +43,11 @@ print('')
 # Plot curve fit
 # ----------------------------------------------------------------------------
 
-for i in range(len(id3)):
-    start = id3[i]
+# indices representing start (id2) and end (id4) of curve in each SOC section
+_, _, id2, _, id4 = data.get_indices_discharge()
+
+for i in range(len(id2)):
+    start = id2[i]
     end = id4[i]
     t_curve = data.time[start:end]
     v_curve = data.voltage[start:end]
@@ -62,7 +64,7 @@ for i in range(len(id3)):
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(data.time, data.voltage, 'C3', label='data')
-ax.plot(data.time[id3], data.voltage[id3], 'x', label='id3')
+ax.plot(data.time[id2], data.voltage[id2], 'x', label='id2')
 ax.plot(data.time[id4], data.voltage[id4], 'x', label='id4')
 config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
 
