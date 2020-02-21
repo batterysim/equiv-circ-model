@@ -30,3 +30,6 @@ class ModulesData:
         self.time = self.time[0:idx + 1]
         self.current = self.current[0:idx + 1]
         self.voltage = self.voltage[0:idx + 1]
+        self.temp_a1 = self.temp_a1[0:idx + 1]
+        self.temp_a2 = self.temp_a2[0:idx + 1]
+        self.temp_a3 = self.temp_a3[0:idx + 1]

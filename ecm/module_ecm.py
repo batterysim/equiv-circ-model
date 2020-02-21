@@ -55,6 +55,12 @@ class ModuleEcm:
         self.eta_dis = params.eta_dis
         self.q_module = params.q_module
 
+        self.a_surf = params.a_surf
+        self.cp_module = params.cp_module
+        self.h_conv = params.h_conv
+        self.m_module = params.m_module
+        self.tinf = params.tinf
+
     @staticmethod
     def func_otc(t, a, b, alpha):
         """
@@ -119,19 +125,17 @@ class ModuleEcm:
         current = self.current
         time = self.time
 
-        q = self.q_module * 3600
-        dt = np.diff(time)
+        q = self.q_module * 3600    # convert from Ah to As
+        dt = np.diff(time)          # time steps in seconds
+        z = np.ones(len(current))   # initialize state of charge array
 
-        nc = len(current)
-        z = np.ones(nc)
-
-        for k in range(1, nc):
-            i = current[k]
+        # determine state of charge at each time step
+        for k, i in enumerate(current[1:]):
             if i > 0:
                 eta = self.eta_chg
             else:
                 eta = self.eta_dis
-            z[k] = z[k - 1] + ((eta * i * dt[k - 1]) / q)
+            z[k + 1] = z[k] + ((eta * i * dt[k]) / q)
 
         return z
 
@@ -308,3 +312,22 @@ class ModuleEcm:
 
         vt = ocv + v0 + v1 + v2
         return vt
+
+    def calc_temperature(self, ti, ocv, vt):
+        """
+        Calculate temperature of the battery module.
+        """
+        dt = np.diff(self.time)
+        nc = len(self.current)
+
+        temps = np.zeros(nc)
+        temps[0] = ti
+
+        for k in range(nc - 1):
+            i = self.current[k]
+            q_irrev = i * (vt[k] - ocv[k])
+            q_conv = self.h_conv * self.a_surf * (self.tinf - temps[k])
+            q = q_irrev + q_conv
+            temps[k + 1] = temps[k] + (q / (self.m_module * self.cp_module)) * dt[k]
+
+        return temps
