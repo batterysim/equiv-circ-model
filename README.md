@@ -55,25 +55,33 @@ conda env remove -n ecm
 
 ## Usage
 
-Examples of using the `ecm` package are provided in the `examples` folder. From within the examples folder, each script can be run from the command line such as:
+Examples of using the `ecm` package are provided in the `examples` folder. Examples are organized into subfolders for battery cell and battery module models. From within the subfolder, each script can be run from the command line such as:
 
 ```bash
 # View plots of the battery cell HPPC data
-python cell_hppc_data.py
+cd ~/equiv-circ-model/examples/cell
+python view_hppc_data.py
 
-# Run the ECM for a battery cell and compare to HPPC data
-python cell_hppc_vt.py
+# Run the ECM for a battery cell and compare to HPPC battery cell data
+cd ~/equiv-circ-model/examples/cell
+python hppc_vt.py
 ```
 
 ## Project structure
 
 **ecm** - Python package containing source code for the equivalent circuit model (ECM).
 
-**examples** - Scripts for running various components of the ECM.
+**examples/cell** - Example scripts for running the battery cell ECM.
 
-**examples/data** - Battery test data from a 2013 Nissan Leaf battery cell and module. This data is used for developing and validating the ECM.
+**examples/cell-to-module** - Examples of using a cell model to predict a battery module.
 
-**examples/params.py** - Parameters for the 2013 Nissan Leaf battery cell..
+**examples/cell-to-pack** - Examples of using a cell model to predict a battery pack.
+
+**examples/data** - Data files from 2013 Nissan Leaf battery cell and module tests. This data is used for developing and validating the ECM.
+
+**examples/module** - Example scripts for running a battery module ECM.
+
+**examples/module-to-pack** - Examples of using a module model to predict a battery pack.
 
 ## Contributing
 
