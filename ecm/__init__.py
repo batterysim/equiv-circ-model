@@ -7,7 +7,8 @@ from .cell_temperature_data import CellTemperatureData
 
 from .module_ecm import ModuleEcm
 from .module_hppc_data import ModuleHppcData
-from .modules_data import ModulesData
+
+from .pack_us06_data import PackUs06Data
 
 from .thermal_model import ThermalModel
 

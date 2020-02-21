@@ -19,7 +19,7 @@ import numpy as np
 import params
 from ecm import CellHppcData
 from ecm import CellEcm
-from ecm import ModulesData
+from ecm import PackUs06Data
 from ecm import ThermalModel
 from ecm import config_ax
 
@@ -40,8 +40,7 @@ rctau = ecm.rctau_ttc(coeffs)
 # ----------------------------------------------------------------------------
 
 file_us06 = '../data/module123-ir-65ah-us06.csv'
-data_us06 = ModulesData(file_us06)
-data_us06.process()
+data_us06 = PackUs06Data(file_us06)
 
 ecm.current = data_us06.current
 ecm.voltage = data_us06.voltage

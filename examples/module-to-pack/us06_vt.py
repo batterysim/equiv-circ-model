@@ -5,15 +5,15 @@ drive cycle current to the battery pack model. Finally, compare the results to
 the US06 drive cycle data which is from three 2013 Nissan Leaf modules
 connected in series.
 
-           |            |       |            |       |            |
-i_pack  ---|== Module ==|---*---|== Module ==|---*---|== Module ==|---
-           |            |       |            |       |            |
+           |            |     |            |     |            |
+i_pack  ---|== Module ==|--*--|== Module ==|--*--|== Module ==|---
+           |            |     |            |     |            |
 """
 
 import matplotlib.pyplot as plt
 
 import params
-from ecm import ModulesData
+from ecm import PackUs06Data
 from ecm import ModuleHppcData
 from ecm import ModuleEcm
 from ecm import config_ax
@@ -23,8 +23,7 @@ from ecm import config_ax
 
 # data from US06 drive cycle from three modules in series
 file = '../data/module123-ir-65ah-us06.csv'
-data = ModulesData(file)
-data.process()
+data = PackUs06Data(file)
 
 # data from HPPC battery module test
 file_hppc = '../data/module1-electchar-65ah-23deg.csv'
@@ -62,12 +61,12 @@ print('q =', ecm.q_module)
 # ----------------------------------------------------------------------------
 
 fig, ax = plt.subplots(tight_layout=True)
-ax.plot(data.time, soc)
+ax.plot(data.time, soc, 'C6')
 config_ax(ax, xylabels=('Time [s]', 'State of charge [-]'))
 
 fig, ax = plt.subplots(tight_layout=True)
-ax.plot(data.time, data.voltage, 'C3')
-ax.plot(data.time, vt)
+ax.plot(data.time, data.voltage, 'C3', label='data')
+ax.plot(data.time, vt, 'k', label='ecm')
 config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'))
 
 fig, ax = plt.subplots(tight_layout=True)
