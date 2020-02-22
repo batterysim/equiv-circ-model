@@ -20,7 +20,8 @@ data = ModuleHppcData(file)
 ecm = ModuleEcm(data, params)
 
 # indices representing start (id3) and end (id4) of curve in each SOC section
-_, _, _, id3, id4 = data.get_indices_discharge()
+_, _, id2, _, id4 = data.get_indices_discharge()
+id2 = id2[:-1]
 
 # Print curve fit coefficients
 # ----------------------------------------------------------------------------
@@ -45,8 +46,8 @@ print('')
 # Plot curve fit
 # ----------------------------------------------------------------------------
 
-for i in range(len(id3)):
-    start = id3[i]
+for i in range(len(id2)):
+    start = id2[i]
     end = id4[i]
     t_curve = data.time[start:end]
     v_curve = data.voltage[start:end]
@@ -63,8 +64,9 @@ for i in range(len(id3)):
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(data.time, data.voltage, 'C3', label='data')
-ax.plot(data.time[id3], data.voltage[id3], 'x', label='id3')
-ax.plot(data.time[id4], data.voltage[id4], 'x', label='id4')
+ax.plot(data.time[id2], data.voltage[id2], '*', label='id2')
+# ax.plot(data.time[id3], data.voltage[id3], '*', label='id3')
+ax.plot(data.time[id4], data.voltage[id4], '*', label='id4')
 config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
 
 plt.show()

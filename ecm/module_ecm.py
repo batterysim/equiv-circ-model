@@ -204,12 +204,16 @@ class ModuleEcm:
         coeff : array
             Coefficients at each 10% change in SOC.
         """
-        _, _, _, id3, id4 = self.idd
-        nrow = len(id3)
+
+        # index points for curve fit, id2 and id4 must be same length
+        _, _, id2, _, id4 = self.idd
+        id2 = id2[:-1]
+
+        nrow = len(id2)
         coeff = np.zeros((nrow, ncoeff))
 
         for i in range(nrow):
-            start = id3[i]
+            start = id2[i]
             end = id4[i]
             t = self.time[start:end + 1]
             t_curve = t - t[0]
