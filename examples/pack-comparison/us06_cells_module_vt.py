@@ -21,6 +21,7 @@ from ecm import PackUs06Data
 from ecm import config_ax
 from helpers import get_vt_cell_pack
 from helpers import get_vt_module_pack
+from helpers import r2fit
 
 # Parameters
 # ----------------------------------------------------------------------------
@@ -50,6 +51,15 @@ vt_cell = get_vt_cell_pack(params, n_parallel, data_us06, ecm_cell)
 
 ecm_module = ModuleEcm(data_hppc_mod, params)
 vt_module = get_vt_module_pack(data_us06, ecm_module)
+
+# Print
+# ----------------------------------------------------------------------------
+
+r2_cell = r2fit(data_us06.voltage, vt_cell)
+r2_module = r2fit(data_us06.voltage, vt_module)
+
+print(f'R² cell    {r2_cell:.2f}')
+print(f'R² module  {r2_module:.2f}')
 
 # Plot
 # ----------------------------------------------------------------------------

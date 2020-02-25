@@ -1,7 +1,9 @@
 """
 Helper functions to calculate vt from cell ECM and module ECM to predict
-battery pack voltage.
+battery pack voltage. Helper function to calculate
 """
+
+import numpy as np
 
 
 def get_vt_cell_pack(params, n_parallel, data_us06, ecm):
@@ -43,3 +45,17 @@ def get_vt_module_pack(data_us06, ecm):
     vt_pack = vt * 2.985
 
     return vt_pack
+
+
+def r2fit(y, y_fit):
+
+    # residual sum of squares
+    ss_res = np.sum((y - y_fit) ** 2)
+
+    # total sum of squares
+    ss_tot = np.sum((y - np.mean(y)) ** 2)
+
+    # r-squared
+    r2 = 1 - (ss_res / ss_tot)
+
+    return r2
