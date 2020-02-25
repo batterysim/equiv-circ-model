@@ -50,7 +50,7 @@ vt = ecm.vt(soc, ocv, rctau)
 temps = ecm.calc_temperature(295.15, ocv, vt)
 
 # vt = vt * 3
-vt = vt * 2.98
+vt = vt * 2.985
 
 # Print
 # ----------------------------------------------------------------------------

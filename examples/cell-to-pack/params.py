@@ -37,8 +37,7 @@ n_series = 2
 q_cell = 30.6
 
 # Total capacity of the battery module [Ah]
-# q_modu/le = 65.4
-# q_module = 61.2
+q_module = 65.4
 
 # Ambient temperature [K]
 tinf = 298.15
