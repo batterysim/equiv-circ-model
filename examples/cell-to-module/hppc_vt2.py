@@ -76,4 +76,13 @@ ax.plot(ecm_module.time, vt_module, 'C3', label='module')
 ax.plot(ecm_cell.time, vt_cell, 'k--', label='cell')
 config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
 
+fig, ax = plt.subplots(tight_layout=True)
+ax.plot(data_module.time, data_module.voltage, 'C3', label='module data')
+ax.plot(ecm_cell.time, vt_cell, 'k--', label='cell ecm')
+config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
+
+fig, ax = plt.subplots(tight_layout=True)
+ax.plot(data_module.time, abs(data_module.voltage - vt_cell))
+config_ax(ax, xylabels=('Time [s]', 'Absolute voltage difference [V]'))
+
 plt.show()
