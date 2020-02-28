@@ -8,9 +8,9 @@ each cell in the battery pack.
 Battery pack where cells are connected in parallel to make a module. The
 modules are connected in series to make a pack.
 
-         |== Cell ==|  |== Cell ==|
-Pack  ---|== Cell ==|--|== Cell ==|---
-         |== Cell ==|  |== Cell ==|
+         |== Cell ==|     |== Cell ==|
+Pack  ---|== Cell ==|--*--|== Cell ==|---
+         |== Cell ==|     |== Cell ==|
 """
 
 import matplotlib.pyplot as plt

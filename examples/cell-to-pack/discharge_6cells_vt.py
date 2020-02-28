@@ -8,9 +8,9 @@ represents each cell in the battery pack.
 Battery pack where cells are connected in parallel to make a module. The
 modules are connected in series to make a pack.
 
-           |== Cell ==|       |== Cell ==|
-i_pack  ---|== Cell ==|---*---|== Cell ==|---*
-           |== Cell ==|       |== Cell ==|
+         |== Cell ==|     |== Cell ==|
+Pack  ---|== Cell ==|--*--|== Cell ==|---
+         |== Cell ==|     |== Cell ==|
 """
 
 import matplotlib.pyplot as plt
@@ -90,22 +90,28 @@ for k in range(n_cells):
     _, temp_cell = tm.calc_q_temp(i=icell, ocv=ocv, time=data_dis.time, ti=297, vt=vt)
     temp_cells[k] = temp_cell
 
-# Plot
+# Print
 # ----------------------------------------------------------------------------
 
-fig, ax = plt.subplots(tight_layout=True)
-ax.plot(data_dis.time, data_dis.current, marker='.')
-config_ax(ax, xylabels=('Time [s]', 'Current [A]'))
+# currents for each cell in a module should sum to total discharge current
+print(f'i_pack = {i_pack[-1]:.2f}')
+print(f'i_sum0 = {i_cells[-1][0].sum():.2f}')
+print(f'i_sum1 = {i_cells[-1][1].sum():.2f}')
+
+# Plot
+# ----------------------------------------------------------------------------
 
 fig, ax = plt.subplots(tight_layout=True)
 ax.plot(data_dis.time, data_dis.voltage, color='C3', marker='.', label='data')
 ax.plot(data_dis.time, vt_dis, label='ecm')
 config_ax(ax, xylabels=('Time [s]', 'Voltage [V]'), loc='best')
 
-fig, ax = plt.subplots(tight_layout=True)
+fig, (ax1, ax2) = plt.subplots(1, 2, tight_layout=True)
+ax1.plot(data_dis.time, i_pack, label='data')
+config_ax(ax1, xylabels=('Time [s]', 'Current [A]'), loc='best')
 for k in range(n_cells):
-    ax.plot(data_dis.time, i_cells2[k], label=f'cell {k+1}')
-config_ax(ax, xylabels=('Time [s]', 'Current [A]'), loc='best')
+    ax2.plot(data_dis.time, i_cells2[k], label=f'cell {k+1}')
+config_ax(ax2, xylabels=('Time [s]', ''), loc='best')
 
 fig, ax = plt.subplots(tight_layout=True)
 for k in range(n_cells):
