@@ -5,12 +5,40 @@ from scipy.integrate import solve_ivp
 
 class ThermalModel:
     """
-    here
+    Thermal model for battery cell temperature.
+
+    Parameters
+    ----------
+    params : module
+        Parameters needed for the thermal calculations. The parameters module
+        must contain variables for `tinf`, `m_cell`, `h_conv`, `cp_cell`, and
+        `a_surf`.
+
+    Attributes
+    ----------
+    tf : float
+        Ambient temperature [K]
+    m : float
+        Mass of the battery cell or battery module [kg]
+    h : float
+        Convective heat transfer coefficient W/(m² K)]
+    cp : float
+        Heat capacity of the battery cell or battery module [J/(kg K)]
+    sa : float
+        Surface area of the battery cell [m²]
+
+    Methods
+    -------
+    calc_q(i, ocv, vt)
+        Calculate heat generation of battery cell.
+    calc_q_temp(i, ocv, time, ti, vt)
+        Calculate heat generation and temperature of battery cell.
     """
 
     def __init__(self, params):
         """
-        here
+        Initialize with module containing parameters for the battery cell or
+        battery module.
         """
         # self.rc = params.rc
         # self.ru = params.ru
@@ -91,6 +119,22 @@ class ThermalModel:
 
     def calc_q(self, *, i, ocv, vt):
         """
+        Calculate heat generation as difference between terminal voltage and
+        open circuit voltage.
+
+        Parameters
+        ----------
+        i : array
+            Current applied to battery cell [A]
+        ocv : array
+            Open circuit voltage of the battery cell [V]
+        vt : array
+            Terminal voltage of the battery cell [V]
+
+        Returns
+        -------
+        q_gen : array
+            Heat generation from battery cell [W]
         """
         nt = len(vt)
         q_gen = np.zeros(nt)
@@ -105,6 +149,26 @@ class ThermalModel:
     def calc_q_temp(self, *, i, ocv, time, ti, vt):
         """
         Calculate heat generation and temperature of the battery cell.
+
+        Parameters
+        ----------
+        i : array
+            Current applied to battery cell [A]
+        ocv : array
+            Open circuit voltage of the battery cell [V]
+        time : array
+            Time associated with data points [s]
+        ti : float
+            Initial temperature of the battery cell [K]
+        vt : array
+            Terminal voltage of the battery cell [V]
+
+        Returns
+        -------
+        q_gen : array
+            Heat generation from battery cell [W]
+        tk : array
+            Temperature of the battery cell [K]
         """
         dt = np.diff(time)
         nt = len(vt)

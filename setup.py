@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='ecm',
-    version='20.2',
+    version='20.3',
     author='Gavin Wiggins',
     description='A Python package for equivalent circuit models',
     long_description=long_description,
