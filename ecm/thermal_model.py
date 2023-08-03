@@ -53,6 +53,15 @@ class ThermalModel:
 
     def solve_tc_ts(self, q, time):
         """
+        Thermal model for core Tc and surface Ts temperatures. The Rc, Ru, Cc,
+        and Cs coefficients are from Table 1 in the Perez 2017 paper. The
+        temperature formulas are from Equations 5 and 6 in the same paper.
+
+        Reference
+        ---------
+        Perez, Hu, Dey, and Moura. Optimal Charging of Li-Ion Batteries With
+        Coupled Electro-Thermal-Aging Dynamics. IEEE Transactions on
+        Vehicular Technology, vol. 66, no. 9, pp. 7761-7770, 2017.
         """
         rc = self.rc
         ru = self.ru
